@@ -5,12 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Conexao {
-//    DEFINIÇÃO DOS ATRIBUTOS
+    //    DEFINIÇÃO DOS ATRIBUTOS
     private Connection conn;
     private PreparedStatement pstmt;
     private ResultSet rs;
 
-//    DEFINIÇÃO MÉTODO CONECTAR --> Inicia conexão com o BD
+    //    DEFINIÇÃO MÉTODO CONECTAR --> Inicia conexão com o BD
     public boolean conectar() {
         try {
             // Informa qual Driver será utilizado na conexão
@@ -32,7 +32,7 @@ public class Conexao {
         return false;
     }
 
-//    DEFINIÇÃO DO MÉTODO DESCONECTAR
+    //    DEFINIÇÃO DO MÉTODO DESCONECTAR
     public void desconectar() {
         try {
             // Verifica se a conexão está ativa
