@@ -21,19 +21,20 @@
 
 CREATE TABLE universitario 
 ( 
+ id INT PRIMARY KEY,
  username VARCHAR(50) NOT NULL,  
  email VARCHAR(266) NOT NULL,  
  senha VARCHAR(100) NOT NULL,  
  descricao TEXT,  
  nome VARCHAR(100) NOT NULL,  
- dne VARCHAR(30) PRIMARY KEY,  
+ dne VARCHAR(30) NOT NULL,  
  plano CHAR(1) NOT NULL,  
  foto_perfil TEXT,  
  id_filtros INT,  
  id_anuncio INT,  
  id_faculdade INT
  CHECK (upper(plano) in ('A', 'I')),
- UNIQUE (username, email,id_filtros)
+ UNIQUE (username, email,id_filtros, dne)
 ); 
 
 CREATE TABLE anuncio_casa 
@@ -54,7 +55,7 @@ CREATE TABLE anuncio_casa
  cidade VARCHAR(100) NOT NULL,  
  uf VARCHAR(2) NOT NULL,  
  id_filtros INT,  
- cpf_anunciante VARCHAR(11) NOT NULL,  
+ id_anunciante INT NOT NULL,  
  id_boost INT,  
  regras TEXT  
  CHECK (valor > 0 AND quant_max > 0 AND upper(status) in ('A', 'I') AND quant_quartos > 0 AND numero > 0),
@@ -91,11 +92,12 @@ CREATE TABLE boost
 
 CREATE TABLE anunciante 
 ( 
+ id INT PRIMARY KEY,
  dt_nasc DATE NOT NULL,  
  plano CHAR(1) NOT NULL,  
  email VARCHAR(266) NOT NULL,  
  senha VARCHAR(100) NOT NULL,  
- cpf VARCHAR(11) PRIMARY KEY NOT NULL,  
+ cpf VARCHAR(11) NOT NULL,  
  descricao TEXT,  
  username VARCHAR(100) NOT NULL,  
  nome VARCHAR(100) NOT NULL,  
@@ -111,10 +113,10 @@ CREATE TABLE pagamento
  tipo_pgto VARCHAR(50) NOT NULL,  
  dt_pagto DATE NOT NULL,  
  pct_desconto DECIMAL(10, 2),  
- cpf_anunciante VARCHAR(11),  
+ id_anunciante INT,  
  id_anuncio INT,  
  id_plano INT,  
- dne VARCHAR(30)  
+ id_universitario INT  
  CHECK (total > 0)
 ); 
 
@@ -134,10 +136,10 @@ CREATE TABLE chat
  id INT PRIMARY KEY,  
  horario_envio TIME NOT NULL,  
  mensagem TEXT NOT NULL,  
- id_remetente VARCHAR(30) NOT NULL,  
+ id_remetente INT NOT NULL,  
  status VARCHAR(20) NOT NULL,  
  dt_mensagem DATE NOT NULL,  
- dne VARCHAR(30) NOT NULL,  
+ id_universitario INT NOT NULL,  
  id_anuncio INT,  
  id_forum INT 
  CHECK (upper(status) in ('NÃO ENVIADA', 'ENVIADA/NÃO LIDA', 'LIDA'))
@@ -146,7 +148,7 @@ CREATE TABLE chat
 CREATE TABLE telefone_anunciante 
 ( 
  tel VARCHAR(20) NOT NULL,  
- cpf_anunciante VARCHAR(11) NOT NULL,  
+ id_anunciante INT NOT NULL,  
  id INT PRIMARY KEY,
  UNIQUE (tel)
 ); 
@@ -161,7 +163,7 @@ CREATE TABLE foto
 CREATE TABLE telefone_universitario 
 ( 
  tel VARCHAR(20) NOT NULL,  
- dne VARCHAR(30) NOT NULL,  
+ id_universitario INT NOT NULL,  
  id INT PRIMARY KEY,  
  UNIQUE (tel)
 ); 
@@ -169,7 +171,7 @@ CREATE TABLE telefone_universitario
 CREATE TABLE universitario_filtro 
 ( 
  id_filtros INT,  
- dne VARCHAR(30),  
+ id_universitario INT,  
  id INT PRIMARY KEY 
 ); 
 
@@ -184,7 +186,7 @@ CREATE TABLE forum
 ( 
  id INT PRIMARY KEY,  
  nome INT NOT NULL,  
- adm VARCHAR(11) NOT NULL,  
+ id_adm INT NOT NULL,  
  descricao TEXT
 ); 
 
@@ -192,21 +194,21 @@ ALTER TABLE universitario ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE universitario ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
 ALTER TABLE universitario ADD FOREIGN KEY(id_faculdade) REFERENCES faculdade (id);
 ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
-ALTER TABLE anuncio_casa ADD FOREIGN KEY(cpf_anunciante) REFERENCES anunciante (cpf);
+ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_anunciante) REFERENCES anunciante (id);
 ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_boost) REFERENCES boost (id);
 ALTER TABLE boost ADD FOREIGN KEY(id_pagamento) REFERENCES pagamento (id);
-ALTER TABLE pagamento ADD FOREIGN KEY(cpf_anunciante) REFERENCES anunciante (cpf);
+ALTER TABLE pagamento ADD FOREIGN KEY(id_anunciante) REFERENCES anunciante (id);
 ALTER TABLE pagamento ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
 ALTER TABLE pagamento ADD FOREIGN KEY(id_plano) REFERENCES plano (id);
-ALTER TABLE pagamento ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
-ALTER TABLE chat ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
+ALTER TABLE pagamento ADD FOREIGN KEY(id_universitario) REFERENCES universitario (id);
+ALTER TABLE chat ADD FOREIGN KEY(id_universitario) REFERENCES universitario (id);
 ALTER TABLE chat ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
 ALTER TABLE chat ADD FOREIGN KEY(id_forum) REFERENCES forum (id);
-ALTER TABLE telefone_anunciante ADD FOREIGN KEY(cpf_anunciante) REFERENCES anunciante (cpf);
+ALTER TABLE telefone_anunciante ADD FOREIGN KEY(id_anunciante) REFERENCES anunciante (id);
 ALTER TABLE foto ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
-ALTER TABLE telefone_universitario ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
+ALTER TABLE telefone_universitario ADD FOREIGN KEY(id_universitario) REFERENCES universitario (id);
 ALTER TABLE universitario_filtro ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
-ALTER TABLE universitario_filtro ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
+ALTER TABLE universitario_filtro ADD FOREIGN KEY(id_universitario) REFERENCES universitario (id);
 ALTER TABLE anuncio_filtro ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE anuncio_filtro ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
 
