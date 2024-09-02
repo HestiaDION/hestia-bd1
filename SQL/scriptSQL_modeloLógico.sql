@@ -2,26 +2,43 @@
 -- 21/08 15:00
 --  LINK PARA O MODELO LÓGICO UTILIZADO => https://app.brmodeloweb.com/#!/publicview/66c62a7254bfb2f81899fe61
 
+-- DROP TABLE anuncio_filtro;
+-- DROP TABLE chat;
+-- DROP TABLE universitario_filtro;
+-- DROP TABLE telefone_universitario;
+-- DROP TABLE foto;
+-- DROP TABLE telefone_anunciante;
+-- DROP TABLE forum;
+-- DROP TABLE faculdade CASCADE;
+-- DROP TABLE filtros CASCADE;
+-- DROP TABLE anunciante CASCADE;
+-- DROP TABLE plano CASCADE;
+-- DROP TABLE universitario CASCADE;
+-- DROP TABLE anuncio_casa CASCADE;
+-- DROP TABLE boost CASCADE;
+-- DROP TABLE pagamento CASCADE;
+
 
 CREATE TABLE universitario 
 ( 
- username VARCHAR(30) NOT NULL,  
- email VARCHAR(256) NOT NULL,  
- senha TEXT NOT NULL,  
- descricao VARCHAR(500),  
- nome VARCHAR(150) NOT NULL,  
- dne VARCHAR(20) PRIMARY KEY,  
+ username VARCHAR(50) NOT NULL,  
+ email VARCHAR(266) NOT NULL,  
+ senha VARCHAR(100) NOT NULL,  
+ descricao TEXT,  
+ nome VARCHAR(100) NOT NULL,  
+ dne VARCHAR(30) PRIMARY KEY,  
  plano CHAR(1) NOT NULL,  
  foto_perfil TEXT,  
  id_filtros INT,  
- id_anuncio INT
+ id_anuncio INT,  
+ id_faculdade INT
  CHECK (upper(plano) in ('A', 'I')),
- UNIQUE (username,email,id_filtros)
+ UNIQUE (username, email,id_filtros)
 ); 
 
 CREATE TABLE anuncio_casa 
 ( 
- valor FLOAT NOT NULL,  
+ valor DECIMAL(10, 2) NOT NULL,  
  id INT PRIMARY KEY,  
  quant_max INT NOT NULL,  
  status CHAR(1) NOT NULL,  
@@ -32,22 +49,23 @@ CREATE TABLE anuncio_casa
  quant_quartos INT NOT NULL,  
  numero INT NOT NULL,  
  rua VARCHAR(100) NOT NULL,  
- ponto_ref VARCHAR(150),  
+ ponto_ref VARCHAR(100),  
  bairro VARCHAR(100) NOT NULL,  
- cidade VARCHAR(50) NOT NULL,  
- uf CHAR(2) NOT NULL,  
+ cidade VARCHAR(100) NOT NULL,  
+ uf VARCHAR(2) NOT NULL,  
  id_filtros INT,  
- cpf_anunciante CHAR(11) NOT NULL,  
- id_boost INT
+ cpf_anunciante VARCHAR(11) NOT NULL,  
+ id_boost INT,  
+ regras TEXT  
  CHECK (valor > 0 AND quant_max > 0 AND upper(status) in ('A', 'I') AND quant_quartos > 0 AND numero > 0),
  UNIQUE (id_filtros)
 ); 
 
 CREATE TABLE faculdade 
 ( 
- uf CHAR(2) NOT NULL,  
+ uf VARCHAR(2) NOT NULL,  
  cep INT NOT NULL,  
- cidade VARCHAR(50) NOT NULL,  
+ cidade VARCHAR(100) NOT NULL,  
  rua VARCHAR(100) NOT NULL,  
  id INT PRIMARY KEY,  
  bairro VARCHAR(100) NOT NULL  
@@ -56,31 +74,32 @@ CREATE TABLE faculdade
 CREATE TABLE filtros 
 ( 
  id INT PRIMARY KEY,  
- nome_filtro VARCHAR(50) NOT NULL, 
+ nome_filtro VARCHAR(100) NOT NULL,
  UNIQUE (nome_filtro)
 ); 
 
 CREATE TABLE boost 
 ( 
  tipo_boost VARCHAR(50) NOT NULL,  
- valor FLOAT NOT NULL,  
+ valor DECIMAL(10, 2) NOT NULL,  
  id INT PRIMARY KEY,  
  dt_inicio DATE NOT NULL,  
  dt_termino DATE NOT NULL,  
- perc_boost FLOAT NOT NULL  
+ perc_boost DECIMAL(10, 1) NOT NULL,  
+ id_pagamento INT 
 ); 
 
 CREATE TABLE anunciante 
 ( 
  dt_nasc DATE NOT NULL,  
  plano CHAR(1) NOT NULL,  
- email VARCHAR(256) NOT NULL,  
- senha TEXT NOT NULL,  
- cpf CHAR(11) PRIMARY KEY NOT NULL,  
- descricao VARCHAR(200),  
- username VARCHAR(30) NOT NULL,  
- nome VARCHAR(150) NOT NULL,  
- foto_perfil TEXT,  
+ email VARCHAR(266) NOT NULL,  
+ senha VARCHAR(100) NOT NULL,  
+ cpf VARCHAR(11) PRIMARY KEY NOT NULL,  
+ descricao TEXT,  
+ username VARCHAR(100) NOT NULL,  
+ nome VARCHAR(100) NOT NULL,  
+ foto_perfil TEXT
  CHECK (upper(plano) in ('A', 'I')),
  UNIQUE (email,cpf,username)
 ); 
@@ -88,97 +107,107 @@ CREATE TABLE anunciante
 CREATE TABLE pagamento 
 ( 
  id INT PRIMARY KEY,  
- total FLOAT NOT NULL,  
- tipo_pgto VARCHAR(30) NOT NULL,  
+ total DECIMAL(10, 2) NOT NULL,  
+ tipo_pgto VARCHAR(50) NOT NULL,  
  dt_pagto DATE NOT NULL,  
- pct_desconto FLOAT,  
- cpf_anunciante CHAR(11),  
+ pct_desconto DECIMAL(10, 2),  
+ cpf_anunciante VARCHAR(11),  
  id_anuncio INT,  
- id_boost INT,  
  id_plano INT,  
- dne VARCHAR(20)  
+ dne VARCHAR(30)  
  CHECK (total > 0)
 ); 
 
 CREATE TABLE plano 
 ( 
  id INT PRIMARY KEY,  
- nome_plano VARCHAR(30) NOT NULL,  
- valor FLOAT NOT NULL,  
+ nome_plano VARCHAR(100) NOT NULL,  
+ valor DECIMAL(10, 2) NOT NULL,  
  dt_inicio DATE NOT NULL,  
  dt_termino DATE NOT NULL,  
- info VARCHAR(200) NOT NULL 
+ info TEXT NOT NULL
  CHECK (valor > 0)
 ); 
 
 CREATE TABLE chat 
 ( 
- codigo INT PRIMARY KEY,  
- tipo_chat CHAR(2) NOT NULL,  
- horario_envio DATE NOT NULL,  
+ id INT PRIMARY KEY,  
+ horario_envio TIME NOT NULL,  
  mensagem TEXT NOT NULL,  
- id_remetente VARCHAR(20) NOT NULL,  
- status VARCHAR(16) NOT NULL,  
- cpf_anunciante CHAR(11) NOT NULL 
- CHECK (upper(tipo_chat) in ('PV', 'GP') AND upper(status) in ('NÃO ENVIADA', 'ENVIADA/NÃO LIDA', 'LIDA'))
-); 
-
-CREATE TABLE universitario_facul 
-( 
- id INT PRIMARY KEY,  
- codigo_facul INT,  
- dne VARCHAR(20) NOT NULL  
-); 
-
-CREATE TABLE universitarios_chat 
-( 
- id INT PRIMARY KEY,  
- codigo_chat INT NOT NULL,  
- dne VARCHAR(20)  
+ id_remetente VARCHAR(30) NOT NULL,  
+ status VARCHAR(20) NOT NULL,  
+ dt_mensagem DATE NOT NULL,  
+ dne VARCHAR(30) NOT NULL,  
+ id_anuncio INT,  
+ id_forum INT 
+ CHECK (upper(status) in ('NÃO ENVIADA', 'ENVIADA/NÃO LIDA', 'LIDA'))
 ); 
 
 CREATE TABLE telefone_anunciante 
 ( 
- tel CHAR(13) PRIMARY KEY,  
- cpf_anunciante CHAR(11) NOT NULL  
-); 
-
-CREATE TABLE regras 
-( 
- id INT PRIMARY KEY,  
- id_anuncio INT NOT NULL,  
- regra VARCHAR(150) NOT NULL 
-); 
-
-CREATE TABLE fotos 
-( 
+ tel VARCHAR(20) NOT NULL,  
+ cpf_anunciante VARCHAR(11) NOT NULL,  
  id INT PRIMARY KEY,
- url TEXT NOT NULL,  
- id_anuncio INT NOT NULL  
+ UNIQUE (tel)
+); 
+
+CREATE TABLE foto 
+( 
+ url TEXT,  
+ id_anuncio INT NOT NULL,  
+ id INT PRIMARY KEY  
 ); 
 
 CREATE TABLE telefone_universitario 
 ( 
- tel CHAR(13) PRIMARY KEY,  
- dne VARCHAR(20) NOT NULL,
+ tel VARCHAR(20) NOT NULL,  
+ dne VARCHAR(30) NOT NULL,  
+ id INT PRIMARY KEY,  
+ UNIQUE (tel)
+); 
+
+CREATE TABLE universitario_filtro 
+( 
+ id_filtros INT,  
+ dne VARCHAR(30),  
+ id INT PRIMARY KEY 
+); 
+
+CREATE TABLE anuncio_filtro 
+( 
+ id_filtros INT,  
+ id_anuncio INT,  
+ id INT PRIMARY KEY 
+); 
+
+CREATE TABLE forum 
+( 
+ id INT PRIMARY KEY,  
+ nome INT NOT NULL,  
+ adm VARCHAR(11) NOT NULL,  
+ descricao TEXT
 ); 
 
 ALTER TABLE universitario ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE universitario ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
+ALTER TABLE universitario ADD FOREIGN KEY(id_faculdade) REFERENCES faculdade (id);
 ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE anuncio_casa ADD FOREIGN KEY(cpf_anunciante) REFERENCES anunciante (cpf);
 ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_boost) REFERENCES boost (id);
+ALTER TABLE boost ADD FOREIGN KEY(id_pagamento) REFERENCES pagamento (id);
 ALTER TABLE pagamento ADD FOREIGN KEY(cpf_anunciante) REFERENCES anunciante (cpf);
 ALTER TABLE pagamento ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
-ALTER TABLE pagamento ADD FOREIGN KEY(id_boost) REFERENCES boost (id);
 ALTER TABLE pagamento ADD FOREIGN KEY(id_plano) REFERENCES plano (id);
 ALTER TABLE pagamento ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
-ALTER TABLE chat ADD FOREIGN KEY(cpf_anunciante) REFERENCES anunciante (cpf);
-ALTER TABLE universitario_facul ADD FOREIGN KEY(codigo_facul) REFERENCES faculdade (codigo);
-ALTER TABLE universitario_facul ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
-ALTER TABLE universitarios_chat ADD FOREIGN KEY(codigo_chat) REFERENCES chat (codigo);
-ALTER TABLE universitarios_chat ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
+ALTER TABLE chat ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
+ALTER TABLE chat ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
+ALTER TABLE chat ADD FOREIGN KEY(id_forum) REFERENCES forum (id);
 ALTER TABLE telefone_anunciante ADD FOREIGN KEY(cpf_anunciante) REFERENCES anunciante (cpf);
-ALTER TABLE regras ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
-ALTER TABLE fotos ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
-ALTER TABLE telefone_universitario ADD FOREIGN KEY(dne) REFERENCES universitario (dne)
+ALTER TABLE foto ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
+ALTER TABLE telefone_universitario ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
+ALTER TABLE universitario_filtro ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
+ALTER TABLE universitario_filtro ADD FOREIGN KEY(dne) REFERENCES universitario (dne);
+ALTER TABLE anuncio_filtro ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
+ALTER TABLE anuncio_filtro ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
+
+
