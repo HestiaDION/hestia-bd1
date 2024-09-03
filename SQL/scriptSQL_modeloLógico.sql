@@ -190,6 +190,8 @@ CREATE TABLE forum
  descricao TEXT
 ); 
 
+
+
 ALTER TABLE universitario ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE universitario ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
 ALTER TABLE universitario ADD FOREIGN KEY(id_faculdade) REFERENCES faculdade (id);
@@ -211,5 +213,3 @@ ALTER TABLE universitario_filtro ADD FOREIGN KEY(id_filtros) REFERENCES filtros 
 ALTER TABLE universitario_filtro ADD FOREIGN KEY(id_universitario) REFERENCES universitario (id);
 ALTER TABLE anuncio_filtro ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE anuncio_filtro ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
-
-
