@@ -39,27 +39,27 @@ public class Conexao {
     }
 
     // MÉTODOS INSERT
-    public boolean insert(){
-        try{
-            
-        }
-    }
+//    public boolean insert(){
+//        try{
+//
+//        }
+//    }
     //  DEFINIÇÃO DOS MÉTODOS UPDATE
-    public int changeValue(String table, String column, int id, String change){
+    public int changeWhereEqual(String table, String columnToChange,String change, String columnCondition , int id){
         try{
             conect();
 
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
-
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
             pstmt.setString(1, table);
-            pstmt.setString(2, column);
+            pstmt.setString(2, columnToChange);
             pstmt.setString(3, change);
+            pstmt.setString(4, columnCondition);
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
             disconect();
 
-            if (rows > 0){
+            if (rows > 0){+
                 return 1;
             }else return 0;
         }catch (SQLException e){
@@ -67,15 +67,16 @@ public class Conexao {
             return -1;
         }
     }
-    public int changeValue(String table, String column, int id, char change){
+    public int changeWhereEqual(String table, String columnToChange,char change, String columnCondition , int id){
         try{
             conect();
 
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
 
             pstmt.setString(1, table);
-            pstmt.setString(2, column);
+            pstmt.setString(2, columnToChange);
             pstmt.setString(3, String.valueOf(change));
+            pstmt.setString(4, columnCondition);
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
@@ -89,15 +90,16 @@ public class Conexao {
             return -1;
         }
     }
-    public int changeValue(String table, String column, int id, int change){
+    public int changeWhereEqual(String table, String columnToChange,int change, String columnCondition , int id){
         try{
             conect();
 
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
 
             pstmt.setString(1, table);
-            pstmt.setString(2, column);
+            pstmt.setString(2, columnToChange);
             pstmt.setInt(3, change);
+            pstmt.setString(4, columnCondition);
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
@@ -111,15 +113,16 @@ public class Conexao {
             return -1;
         }
     }
-    public int changeValue(String table, String column, int id, float change){
+    public int changeWhereEqual(String table, String columnToChange,float change, String columnCondition , int id){
         try{
             conect();
 
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
 
             pstmt.setString(1, table);
-            pstmt.setString(2, column);
+            pstmt.setString(2, columnToChange);
             pstmt.setFloat(3, change);
+            pstmt.setString(4, columnCondition);
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
@@ -133,15 +136,16 @@ public class Conexao {
             return -1;
         }
     }
-    public int changeValue(String table, String column, int id, double change){
+    public int changeWhereEqual(String table, String columnToChange,double change, String columnCondition , int id){
         try{
             conect();
 
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
 
             pstmt.setString(1, table);
-            pstmt.setString(2, column);
+            pstmt.setString(2, columnToChange);
             pstmt.setDouble(3, change);
+            pstmt.setString(4, columnCondition);
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
@@ -155,37 +159,16 @@ public class Conexao {
             return -1;
         }
     }
-    public int changeValue(String table, String column, int id, boolean change){
+    public int changeWhereEqual(String table, String columnToChange,Date change, String columnCondition , int id){
         try{
             conect();
 
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
 
             pstmt.setString(1, table);
-            pstmt.setString(2, column);
-            pstmt.setBoolean(3, change);
-            pstmt.setInt(4, id);
-
-            int rows = pstmt.executeUpdate();
-            disconect();
-
-            if (rows > 0){
-                return 1;
-            }else return 0;
-        }catch (SQLException e){
-            e.printStackTrace();
-            return -1;
-        }
-    }
-    public int changeValue(String table, String column, int id, Date change){
-        try{
-            conect();
-
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
-
-            pstmt.setString(1, table);
-            pstmt.setString(2, column);
+            pstmt.setString(2, columnToChange);
             pstmt.setDate(3, change);
+            pstmt.setString(4, columnCondition);
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
@@ -199,15 +182,16 @@ public class Conexao {
             return -1;
         }
     }
-    public int changeValue(String table, String column, int id, Time change){
+    public int changeWhereEqual(String table, String columnToChange,Time change, String columnCondition , int id){
         try{
             conect();
 
-            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE PESSOAID =?");
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
 
             pstmt.setString(1, table);
-            pstmt.setString(2, column);
+            pstmt.setString(2, columnToChange);
             pstmt.setTime(3, change);
+            pstmt.setString(4, columnCondition);
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
@@ -243,6 +227,8 @@ public class Conexao {
     }
 
     //  MÉTODOS SELECT (ANÁLISE DOS DADOS)
+//    SELECTS BÁSICOS
+//    Listar tudo da tabela x
     public ResultSet listAll(String tabela){
         try{
             conect();
@@ -256,6 +242,8 @@ public class Conexao {
             return null;
         }
     }
+
+//    Listar tudo onde a coluna da tabela x é igual a y
     public ResultSet listWhereEqual(String table, String column, String condition){
         try{
             conect();
@@ -376,6 +364,8 @@ public class Conexao {
             return null;
         }
     }
+
+//    SELECTS MAIS COMPLEXOS
         //  SELECTS POR TABELA
     //  TABELA UNIVERSITARIO
 
