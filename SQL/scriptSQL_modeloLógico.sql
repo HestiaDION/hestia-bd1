@@ -21,7 +21,7 @@
 
 CREATE TABLE admin 
 (
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  nome VARCHAR(100) NOT NULL,
  email VARCHAR(266) NOT NULL,
  senha VARCHAR(100) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE admin
 
 CREATE TABLE universitario 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  dne VARCHAR(30) NOT NULL, 
  nome VARCHAR(100) NOT NULL, 
  username VARCHAR(50) NOT NULL,  
@@ -49,7 +49,7 @@ CREATE TABLE universitario
 
 CREATE TABLE anuncio_casa 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  cep INT NOT NULL,
  tipo_moradia VARCHAR(50) NOT NULL,
  numero INT NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE anuncio_casa
 
 CREATE TABLE faculdade 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  nome VARCHAR(100),
  cep INT NOT NULL,
  rua VARCHAR(100) NOT NULL,
@@ -86,14 +86,14 @@ CREATE TABLE faculdade
 
 CREATE TABLE filtros 
 ( 
- id INT PRIMARY KEY,  
- nome_filtro VARCHAR(100) NOT NULL,
+ id INT SERIAL PRIMARY KEY,  
+ nome VARCHAR(100) NOT NULL,
  UNIQUE (nome_filtro)
 ); 
 
 CREATE TABLE boost 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  tipo_boost VARCHAR(50) NOT NULL,  
  valor DECIMAL(10, 2) NOT NULL,
  perc_boost DECIMAL(10, 1) NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE boost
 
 CREATE TABLE anunciante 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  cpf VARCHAR(11) NOT NULL,
  nome VARCHAR(100) NOT NULL,
  username VARCHAR(100) NOT NULL,    
@@ -119,7 +119,7 @@ CREATE TABLE anunciante
 
 CREATE TABLE pagamento 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  tipo_pgto VARCHAR(50) NOT NULL,
  dt_pagto DATE NOT NULL,
  pct_desconto DECIMAL(10, 2),
@@ -133,8 +133,8 @@ CREATE TABLE pagamento
 
 CREATE TABLE plano 
 ( 
- id INT PRIMARY KEY,  
- nome_plano VARCHAR(100) NOT NULL,  
+ id INT SERIAL PRIMARY KEY,  
+ nome VARCHAR(100) NOT NULL,  
  valor DECIMAL(10, 2) NOT NULL,  
  dt_inicio DATE NOT NULL,  
  dt_termino DATE NOT NULL,  
@@ -144,7 +144,7 @@ CREATE TABLE plano
 
 CREATE TABLE chat 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  id_remetente INT NOT NULL,
  mensagem TEXT NOT NULL,
  horario_envio TIME NOT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE chat
 
 CREATE TABLE telefone_anunciante 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  tel VARCHAR(20) NOT NULL,  
  id_anunciante INT NOT NULL, 
  UNIQUE (tel)
@@ -166,14 +166,14 @@ CREATE TABLE telefone_anunciante
 
 CREATE TABLE foto 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  url TEXT,  
  id_anuncio INT NOT NULL  
 ); 
 
 CREATE TABLE telefone_universitario 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  tel VARCHAR(20) NOT NULL,  
  id_universitario INT NOT NULL, 
  UNIQUE (tel)
@@ -181,21 +181,21 @@ CREATE TABLE telefone_universitario
 
 CREATE TABLE universitario_filtro 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  id_filtros INT,  
  id_universitario INT   
 ); 
 
 CREATE TABLE anuncio_filtro 
 ( 
- id INT PRIMARY KEY,
+ id INT SERIAL PRIMARY KEY,
  id_filtros INT,  
  id_anuncio INT 
 ); 
 
 CREATE TABLE forum 
 ( 
- id INT PRIMARY KEY,  
+ id INT SERIAL PRIMARY KEY,  
  nome INT NOT NULL,  
  id_adm INT NOT NULL,  
  descricao TEXT
