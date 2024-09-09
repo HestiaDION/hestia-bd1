@@ -42,6 +42,7 @@ public class Conexao {
         }
     }
 
+<<<<<<< HEAD
 //    //  DEFINIÇÃO DO MÉTODO update
 //    public int changeValue(String table, String column, int id, String change){
 //        try{
@@ -379,5 +380,336 @@ public class Conexao {
 //        }
 //    }
     //  SELECTS POR TABELA
+=======
+    // MÉTODOS INSERT
+//    public boolean insert(){
+//        try{
+//
+//        }
+//    }
+    //  DEFINIÇÃO DOS MÉTODOS UPDATE
+    public int changeWhereEqual(String table, String columnToChange,String change, String columnCondition , int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, columnToChange);
+            pstmt.setString(3, change);
+            pstmt.setString(4, columnCondition);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+
+            if (rows > 0){+
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public int changeWhereEqual(String table, String columnToChange,char change, String columnCondition , int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
+
+            pstmt.setString(1, table);
+            pstmt.setString(2, columnToChange);
+            pstmt.setString(3, String.valueOf(change));
+            pstmt.setString(4, columnCondition);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+
+            if (rows > 0){
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public int changeWhereEqual(String table, String columnToChange,int change, String columnCondition , int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
+
+            pstmt.setString(1, table);
+            pstmt.setString(2, columnToChange);
+            pstmt.setInt(3, change);
+            pstmt.setString(4, columnCondition);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+
+            if (rows > 0){
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public int changeWhereEqual(String table, String columnToChange,float change, String columnCondition , int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
+
+            pstmt.setString(1, table);
+            pstmt.setString(2, columnToChange);
+            pstmt.setFloat(3, change);
+            pstmt.setString(4, columnCondition);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+
+            if (rows > 0){
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public int changeWhereEqual(String table, String columnToChange,double change, String columnCondition , int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
+
+            pstmt.setString(1, table);
+            pstmt.setString(2, columnToChange);
+            pstmt.setDouble(3, change);
+            pstmt.setString(4, columnCondition);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+
+            if (rows > 0){
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public int changeWhereEqual(String table, String columnToChange,Date change, String columnCondition , int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
+
+            pstmt.setString(1, table);
+            pstmt.setString(2, columnToChange);
+            pstmt.setDate(3, change);
+            pstmt.setString(4, columnCondition);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+
+            if (rows > 0){
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public int changeWhereEqual(String table, String columnToChange,Time change, String columnCondition , int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("UPDATE ? SET ? = ? WHERE ? =?");
+
+            pstmt.setString(1, table);
+            pstmt.setString(2, columnToChange);
+            pstmt.setTime(3, change);
+            pstmt.setString(4, columnCondition);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+
+            if (rows > 0){
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    //  DEFINIÇÃO DO MÉTODO REMOVER
+    public int remove(String tabela, int id){
+        try{
+            conect();
+
+            pstmt = conn.prepareStatement("DELETE FROM ? WHERE PESSOAID =?");
+            pstmt.setString(1, tabela);
+            pstmt.setInt(2, id);
+
+            int rows = pstmt.executeUpdate();
+            disconect();
+            if (rows > 0){
+                return 1;
+            }else return 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    //  MÉTODOS SELECT (ANÁLISE DOS DADOS)
+//    SELECTS BÁSICOS
+//    Listar tudo da tabela x
+    public ResultSet listAll(String tabela){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ?");
+            pstmt.setString(1, tabela);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+//    Listar tudo onde a coluna da tabela x é igual a y
+    public ResultSet listWhereEqual(String table, String column, String condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setString(3, condition);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ResultSet listWhereEqual(String table, String column, char condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setString(3, String.valueOf(condition));
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ResultSet listWhereEqual(String table, String column, int condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setInt(3, condition);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ResultSet listWhereEqual(String table, String column, float condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setFloat(3, condition);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ResultSet listWhereEqual(String table, String column, double condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setDouble(3, condition);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ResultSet listWhereEqual(String table, String column, boolean condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setBoolean(3, condition);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ResultSet listWhereEqual(String table, String column, Date condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setDate(3, condition);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ResultSet listWhereEqual(String table, String column, Time condition){
+        try{
+            conect();
+            pstmt = conn.prepareStatement("SELECT * FROM ? WHERE ? = ?");
+            pstmt.setString(1, table);
+            pstmt.setString(2, column);
+            pstmt.setTime(3, condition);
+            ResultSet rset = pstmt.executeQuery();
+            disconect();
+            return rset;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+//    SELECTS MAIS COMPLEXOS
+        //  SELECTS POR TABELA
+>>>>>>> 7e5fb21e6ffd7b95e789f264e29bce031dd0e8b2
     //  TABELA UNIVERSITARIO
 }

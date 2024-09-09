@@ -2,6 +2,7 @@
 -- 21/08 15:00
 --  LINK PARA O MODELO LÓGICO UTILIZADO => https://app.brmodeloweb.com/#!/publicview/66c62a7254bfb2f81899fe61
 
+-- DROP TABLE admin;
 -- DROP TABLE anuncio_filtro;
 -- DROP TABLE chat;
 -- DROP TABLE universitario_filtro;
@@ -18,18 +19,27 @@
 -- DROP TABLE boost CASCADE;
 -- DROP TABLE pagamento CASCADE;
 
+CREATE TABLE admin 
+(
+ id INT PRIMARY KEY,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(266) NOT NULL,
+ senha VARCHAR(100) NOT NULL,
+ UNIQUE(email)
+);
 
 CREATE TABLE universitario 
 ( 
  id INT PRIMARY KEY,
+ dne VARCHAR(30) NOT NULL, 
+ nome VARCHAR(100) NOT NULL, 
  username VARCHAR(50) NOT NULL,  
  email VARCHAR(266) NOT NULL,  
  senha VARCHAR(100) NOT NULL,  
- descricao TEXT,  
- nome VARCHAR(100) NOT NULL,  
- dne VARCHAR(30) NOT NULL,  
+ genero VARCHAR(50) NOT NULL,
  plano CHAR(1) NOT NULL,  
- foto_perfil TEXT,  
+ foto_perfil TEXT, 
+ descricao TEXT,
  id_filtros INT,  
  id_anuncio INT,  
  id_faculdade INT
@@ -39,37 +49,39 @@ CREATE TABLE universitario
 
 CREATE TABLE anuncio_casa 
 ( 
- valor DECIMAL(10, 2) NOT NULL,  
- id INT PRIMARY KEY,  
- quant_max INT NOT NULL,  
- status CHAR(1) NOT NULL,  
- dt_inicio DATE NOT NULL,  
- dt_expiracao DATE NOT NULL,  
- faculdade VARCHAR(100) NOT NULL,  
- cep INT NOT NULL,  
- quant_quartos INT NOT NULL,  
- numero INT NOT NULL,  
- rua VARCHAR(100) NOT NULL,  
- ponto_ref VARCHAR(100),  
+ id INT PRIMARY KEY,
+ cep INT NOT NULL,
+ tipo_moradia VARCHAR(50) NOT NULL,
+ numero INT NOT NULL,
+ rua VARCHAR(100) NOT NULL,
  bairro VARCHAR(100) NOT NULL,  
  cidade VARCHAR(100) NOT NULL,  
- uf VARCHAR(2) NOT NULL,  
+ uf VARCHAR(2) NOT NULL, 
+ quant_quartos INT NOT NULL,
+ quant_max INT NOT NULL,
+ valor DECIMAL(10, 2) NOT NULL, 
+ status CHAR(1) NOT NULL,
+ dt_inicio DATE NOT NULL,  
+ dt_expiracao DATE NOT NULL,
+ faculdade VARCHAR(100) NOT NULL,  
+ ponto_ref VARCHAR(100),  
+ regras TEXT,
  id_filtros INT,  
  id_anunciante INT NOT NULL,  
- id_boost INT,  
- regras TEXT  
+ id_boost INT 
  CHECK (valor > 0 AND quant_max > 0 AND upper(status) in ('A', 'I') AND quant_quartos > 0 AND numero > 0),
  UNIQUE (id_filtros)
 ); 
 
 CREATE TABLE faculdade 
 ( 
- uf VARCHAR(2) NOT NULL,  
- cep INT NOT NULL,  
- cidade VARCHAR(100) NOT NULL,  
- rua VARCHAR(100) NOT NULL,  
- id INT PRIMARY KEY,  
- bairro VARCHAR(100) NOT NULL  
+ id INT PRIMARY KEY,
+ nome VARCHAR(100),
+ cep INT NOT NULL,
+ rua VARCHAR(100) NOT NULL,
+ bairro VARCHAR(100) NOT NULL,
+ cidade VARCHAR(100) NOT NULL,
+ uf VARCHAR(2) NOT NULL
 ); 
 
 CREATE TABLE filtros 
@@ -81,26 +93,25 @@ CREATE TABLE filtros
 
 CREATE TABLE boost 
 ( 
+ id INT PRIMARY KEY,
  tipo_boost VARCHAR(50) NOT NULL,  
- valor DECIMAL(10, 2) NOT NULL,  
- id INT PRIMARY KEY,  
+ valor DECIMAL(10, 2) NOT NULL,
+ perc_boost DECIMAL(10, 1) NOT NULL,
  dt_inicio DATE NOT NULL,  
- dt_termino DATE NOT NULL,  
- perc_boost DECIMAL(10, 1) NOT NULL,  
+ dt_termino DATE NOT NULL,    
  id_pagamento INT 
 ); 
 
 CREATE TABLE anunciante 
 ( 
  id INT PRIMARY KEY,
- dt_nasc DATE NOT NULL,  
- plano CHAR(1) NOT NULL,  
+ cpf VARCHAR(11) NOT NULL,
+ nome VARCHAR(100) NOT NULL,
+ username VARCHAR(100) NOT NULL,    
  email VARCHAR(266) NOT NULL,  
- senha VARCHAR(100) NOT NULL,  
- cpf VARCHAR(11) NOT NULL,  
- descricao TEXT,  
- username VARCHAR(100) NOT NULL,  
- nome VARCHAR(100) NOT NULL,  
+ senha VARCHAR(100) NOT NULL, 
+ plano CHAR(1) NOT NULL,
+ descricao TEXT,    
  foto_perfil TEXT
  CHECK (upper(plano) in ('A', 'I')),
  UNIQUE (email,cpf,username)
@@ -108,11 +119,11 @@ CREATE TABLE anunciante
 
 CREATE TABLE pagamento 
 ( 
- id INT PRIMARY KEY,  
- total DECIMAL(10, 2) NOT NULL,  
- tipo_pgto VARCHAR(50) NOT NULL,  
- dt_pagto DATE NOT NULL,  
- pct_desconto DECIMAL(10, 2),  
+ id INT PRIMARY KEY,
+ tipo_pgto VARCHAR(50) NOT NULL,
+ dt_pagto DATE NOT NULL,
+ pct_desconto DECIMAL(10, 2),
+ total DECIMAL(10, 2) NOT NULL,    
  id_anunciante INT,  
  id_anuncio INT,  
  id_plano INT,  
@@ -133,12 +144,12 @@ CREATE TABLE plano
 
 CREATE TABLE chat 
 ( 
- id INT PRIMARY KEY,  
- horario_envio TIME NOT NULL,  
- mensagem TEXT NOT NULL,  
- id_remetente INT NOT NULL,  
- status VARCHAR(20) NOT NULL,  
- dt_mensagem DATE NOT NULL,  
+ id INT PRIMARY KEY,
+ id_remetente INT NOT NULL,
+ mensagem TEXT NOT NULL,
+ horario_envio TIME NOT NULL,
+ dt_mensagem DATE NOT NULL,
+ status VARCHAR(20) NOT NULL,    
  id_universitario INT NOT NULL,  
  id_anuncio INT,  
  id_forum INT 
@@ -147,39 +158,39 @@ CREATE TABLE chat
 
 CREATE TABLE telefone_anunciante 
 ( 
- tel VARCHAR(20) NOT NULL,  
- id_anunciante INT NOT NULL,  
  id INT PRIMARY KEY,
+ tel VARCHAR(20) NOT NULL,  
+ id_anunciante INT NOT NULL, 
  UNIQUE (tel)
 ); 
 
 CREATE TABLE foto 
 ( 
+ id INT PRIMARY KEY,
  url TEXT,  
- id_anuncio INT NOT NULL,  
- id INT PRIMARY KEY  
+ id_anuncio INT NOT NULL  
 ); 
 
 CREATE TABLE telefone_universitario 
 ( 
+ id INT PRIMARY KEY,
  tel VARCHAR(20) NOT NULL,  
- id_universitario INT NOT NULL,  
- id INT PRIMARY KEY,  
+ id_universitario INT NOT NULL, 
  UNIQUE (tel)
 ); 
 
 CREATE TABLE universitario_filtro 
 ( 
+ id INT PRIMARY KEY,
  id_filtros INT,  
- id_universitario INT,  
- id INT PRIMARY KEY 
+ id_universitario INT   
 ); 
 
 CREATE TABLE anuncio_filtro 
 ( 
+ id INT PRIMARY KEY,
  id_filtros INT,  
- id_anuncio INT,  
- id INT PRIMARY KEY 
+ id_anuncio INT 
 ); 
 
 CREATE TABLE forum 
