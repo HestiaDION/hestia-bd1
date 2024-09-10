@@ -41,7 +41,6 @@ CREATE TABLE universitario
  plano CHAR(1) NOT NULL,  
  foto_perfil TEXT, 
  descricao TEXT,
- id_filtros UUID,  
  id_anuncio UUID,  
  id_faculdade UUID
  CHECK (upper(plano) in ('A', 'I')),
@@ -67,7 +66,6 @@ CREATE TABLE anuncio_casa
  faculdade VARCHAR(100) NOT NULL,  
  ponto_ref VARCHAR(100),  
  regras TEXT,
- id_filtros UUID,  
  id_anunciante UUID NOT NULL,  
  id_boost UUID 
  CHECK (valor > 0 AND quant_max > 0 AND upper(status) in ('A', 'I') AND quant_quartos > 0 AND numero > 0),
@@ -204,10 +202,8 @@ CREATE TABLE forum
 
 
 
-ALTER TABLE universitario ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE universitario ADD FOREIGN KEY(id_anuncio) REFERENCES anuncio_casa (id);
 ALTER TABLE universitario ADD FOREIGN KEY(id_faculdade) REFERENCES faculdade (id);
-ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_filtros) REFERENCES filtros (id);
 ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_anunciante) REFERENCES anunciante (id);
 ALTER TABLE anuncio_casa ADD FOREIGN KEY(id_boost) REFERENCES boost (id);
 ALTER TABLE boost ADD FOREIGN KEY(id_pagamento) REFERENCES pagamento (id);
