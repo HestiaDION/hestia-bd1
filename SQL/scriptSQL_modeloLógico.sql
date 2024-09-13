@@ -18,10 +18,11 @@
 -- DROP TABLE anuncio_casa CASCADE;
 -- DROP TABLE boost CASCADE;
 -- DROP TABLE pagamento CASCADE;
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 CREATE TABLE admin 
 (
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  nome VARCHAR(100) NOT NULL,
  email VARCHAR(266) NOT NULL,
  senha VARCHAR(100) NOT NULL,
@@ -30,7 +31,7 @@ CREATE TABLE admin
 
 CREATE TABLE universitario 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  dne VARCHAR(30) NOT NULL, 
  nome VARCHAR(100) NOT NULL, 
  username VARCHAR(50) NOT NULL,  
@@ -40,16 +41,16 @@ CREATE TABLE universitario
  plano CHAR(1) NOT NULL,  
  foto_perfil TEXT, 
  descricao TEXT,
- id_filtros INT,  
- id_anuncio INT,  
- id_faculdade INT
+ id_filtros UUID,  
+ id_anuncio UUID,  
+ id_faculdade UUID
  CHECK (upper(plano) in ('A', 'I')),
  UNIQUE (username, email,id_filtros, dne)
 ); 
 
 CREATE TABLE anuncio_casa 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  cep INT NOT NULL,
  tipo_moradia VARCHAR(50) NOT NULL,
  numero INT NOT NULL,
@@ -66,16 +67,16 @@ CREATE TABLE anuncio_casa
  faculdade VARCHAR(100) NOT NULL,  
  ponto_ref VARCHAR(100),  
  regras TEXT,
- id_filtros INT,  
- id_anunciante INT NOT NULL,  
- id_boost INT 
+ id_filtros UUID,  
+ id_anunciante UUID NOT NULL,  
+ id_boost UUID 
  CHECK (valor > 0 AND quant_max > 0 AND upper(status) in ('A', 'I') AND quant_quartos > 0 AND numero > 0),
  UNIQUE (id_filtros)
 ); 
 
 CREATE TABLE faculdade 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  nome VARCHAR(100),
  cep INT NOT NULL,
  rua VARCHAR(100) NOT NULL,
@@ -86,25 +87,25 @@ CREATE TABLE faculdade
 
 CREATE TABLE filtros 
 ( 
- id INT PRIMARY KEY,  
- nome_filtro VARCHAR(100) NOT NULL,
- UNIQUE (nome_filtro)
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  
+ nome VARCHAR(100) NOT NULL,
+ UNIQUE (nome)
 ); 
 
 CREATE TABLE boost 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  tipo_boost VARCHAR(50) NOT NULL,  
  valor DECIMAL(10, 2) NOT NULL,
  perc_boost DECIMAL(10, 1) NOT NULL,
  dt_inicio DATE NOT NULL,  
  dt_termino DATE NOT NULL,    
- id_pagamento INT 
+ id_pagamento UUID 
 ); 
 
 CREATE TABLE anunciante 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  cpf VARCHAR(11) NOT NULL,
  nome VARCHAR(100) NOT NULL,
  username VARCHAR(100) NOT NULL,    
@@ -119,22 +120,22 @@ CREATE TABLE anunciante
 
 CREATE TABLE pagamento 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  tipo_pgto VARCHAR(50) NOT NULL,
  dt_pagto DATE NOT NULL,
  pct_desconto DECIMAL(10, 2),
  total DECIMAL(10, 2) NOT NULL,    
- id_anunciante INT,  
- id_anuncio INT,  
- id_plano INT,  
- id_universitario INT  
+ id_anunciante UUID,  
+ id_anuncio UUID,  
+ id_plano UUID,  
+ id_universitario UUID  
  CHECK (total > 0)
 ); 
 
 CREATE TABLE plano 
 ( 
- id INT PRIMARY KEY,  
- nome_plano VARCHAR(100) NOT NULL,  
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  
+ nome VARCHAR(100) NOT NULL,  
  valor DECIMAL(10, 2) NOT NULL,  
  dt_inicio DATE NOT NULL,  
  dt_termino DATE NOT NULL,  
@@ -144,60 +145,60 @@ CREATE TABLE plano
 
 CREATE TABLE chat 
 ( 
- id INT PRIMARY KEY,
- id_remetente INT NOT NULL,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+ id_remetente UUID NOT NULL,
  mensagem TEXT NOT NULL,
  horario_envio TIME NOT NULL,
  dt_mensagem DATE NOT NULL,
  status VARCHAR(20) NOT NULL,    
- id_universitario INT NOT NULL,  
- id_anuncio INT,  
- id_forum INT 
+ id_universitario UUID NOT NULL,  
+ id_anuncio UUID,  
+ id_forum UUID 
  CHECK (upper(status) in ('NÃO ENVIADA', 'ENVIADA/NÃO LIDA', 'LIDA'))
 ); 
 
 CREATE TABLE telefone_anunciante 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  tel VARCHAR(20) NOT NULL,  
- id_anunciante INT NOT NULL, 
+ id_anunciante UUID NOT NULL, 
  UNIQUE (tel)
 ); 
 
 CREATE TABLE foto 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  url TEXT,  
- id_anuncio INT NOT NULL  
+ id_anuncio UUID NOT NULL  
 ); 
 
 CREATE TABLE telefone_universitario 
 ( 
- id INT PRIMARY KEY,
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  tel VARCHAR(20) NOT NULL,  
- id_universitario INT NOT NULL, 
+ id_universitario UUID NOT NULL, 
  UNIQUE (tel)
 ); 
 
 CREATE TABLE universitario_filtro 
 ( 
- id INT PRIMARY KEY,
- id_filtros INT,  
- id_universitario INT   
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+ id_filtros UUID,  
+ id_universitario UUID   
 ); 
 
 CREATE TABLE anuncio_filtro 
 ( 
- id INT PRIMARY KEY,
- id_filtros INT,  
- id_anuncio INT 
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+ id_filtros UUID,  
+ id_anuncio UUID 
 ); 
 
 CREATE TABLE forum 
 ( 
- id INT PRIMARY KEY,  
- nome INT NOT NULL,  
- id_adm INT NOT NULL,  
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  
+ nome VARCHAR(100) NOT NULL,  
+ id_adm UUID NOT NULL,  
  descricao TEXT
 ); 
 
