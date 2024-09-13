@@ -44,7 +44,7 @@ CREATE TABLE universitario
  id_anuncio UUID,  
  id_faculdade UUID
  CHECK (upper(plano) in ('A', 'I')),
- UNIQUE (username, email,id_filtros, dne)
+ UNIQUE (username, email, dne)
 ); 
 
 CREATE TABLE anuncio_casa 
@@ -68,8 +68,7 @@ CREATE TABLE anuncio_casa
  regras TEXT,
  id_anunciante UUID NOT NULL,  
  id_boost UUID 
- CHECK (valor > 0 AND quant_max > 0 AND upper(status) in ('A', 'I') AND quant_quartos > 0 AND numero > 0),
- UNIQUE (id_filtros)
+ CHECK (valor > 0 AND quant_max > 0 AND upper(status) in ('A', 'I') AND quant_quartos > 0 AND numero > 0)
 ); 
 
 CREATE TABLE faculdade 
