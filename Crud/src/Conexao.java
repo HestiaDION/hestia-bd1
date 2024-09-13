@@ -16,7 +16,7 @@ public class Conexao {
             Class.forName("org.postgresql.Driver"); // Informa qual Driver será utilizado na conexão
             conn = DriverManager.getConnection("jdbc:postgresql://pg-aplicativo-hestia24.k.aivencloud.com:23986/defaultdb?ssl=require&user=avnadmin&password=AVNS_3URGOb6MG5fTz7u4pnP"); // Estabelece a conexão com o BD
 
-            return true; // Retorna verdadeiro ao obter sucesso
+            return true; // Retorna verdadeiro se obter sucesso
 
         } catch (SQLException | ClassNotFoundException sqle) {
             sqle.printStackTrace();
@@ -33,7 +33,7 @@ public class Conexao {
                 conn.close(); // Finaliza a conexão
             }
 
-            return true; // Retorna verdadeiro ao obter sucesso
+            return true; // Retorna verdadeiro se obter sucesso
 
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -41,5 +41,9 @@ public class Conexao {
             return false; // Retorna falso em caso de exceção
         }
     }
-
 }
+
+// INSERT E UPDATE
+// COLOCAR RETORNO CASO NÃO ENCONTRE NADA
+
+// SELECTS NO PAGAMENTO
