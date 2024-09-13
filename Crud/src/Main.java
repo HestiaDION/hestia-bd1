@@ -10,3 +10,5 @@ public class Main {
         conexao.desconectar();
     }
 }
+
+// COMO VAMOS FAZER A INSERÇÃO DO ID EM CADA REGISTRO?
