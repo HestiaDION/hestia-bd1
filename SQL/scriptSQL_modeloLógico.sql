@@ -23,14 +23,14 @@
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
-CREATE TABLE Admin ( id     UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Admin ( uId    UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                    , cNome  VARCHAR(100) NOT NULL
                    , cEmail VARCHAR(266) NOT NULL
                    , cEenha VARCHAR(100) NOT NULL
                    , UNIQUE(cEmail)
                    );
 
-CREATE TABLE Universitario ( id            UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                            , cDne          VARCHAR(30)  NOT NULL
                            , cNome         VARCHAR(100) NOT NULL
                            , cUsername     VARCHAR(50)  NOT NULL
@@ -40,8 +40,8 @@ CREATE TABLE Universitario ( id            UUID         PRIMARY KEY DEFAULT gen_
                            , cPlano        CHAR(1)      NOT NULL    DEFAULT '0'
                            , cFoto_perfil  TEXT             NULL
                            , cDescricao    TEXT             NULL
-                           , id_anuncio    UUID             NULL
-                           , id_faculdade  UUID         NOT NULL
+                           , uId_anuncio   UUID             NULL
+                           , uId_faculdade UUID         NOT NULL
                            , CHECK ( cPlano in ('0', '1')                                          AND
                                      cEmail ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
                                    )
@@ -50,7 +50,8 @@ CREATE TABLE Universitario ( id            UUID         PRIMARY KEY DEFAULT gen_
                            , UNIQUE (cDne)
                            );
 
-CREATE TABLE Anuncio_casa ( id              UUID           PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Anuncio_casa ( uId             UUID           PRIMARY KEY DEFAULT gen_random_uuid()
+                          , cNmMoradia      VARCHAR(10)    NOT NULL    DEFAULT substring(gen_random_uuid()::text, 1, 10)
                           , cCEP            VARCHAR(9)     NOT NULL
                           , cTipo_moradia   VARCHAR(50)    NOT NULL
                           , iNumCasa        INT            NOT NULL
@@ -64,11 +65,10 @@ CREATE TABLE Anuncio_casa ( id              UUID           PRIMARY KEY DEFAULT g
                           , cStatus         CHAR(1)        NOT NULL    DEFAULT '1'
                           , dDt_inicio      DATE           NOT NULL    DEFAULT CURRENT_DATE
                           , dDt_expiracao   DATE           NOT NULL    DEFAULT CURRENT_DATE + INTERVAL '6 MONTH'
-                          , faculdade      VARCHAR(100)   NOT NULL --*************
                           , cPonto_ref      VARCHAR(100)       NULL
                           , cRegras         TEXT               NULL
-                          , id_anunciante   UUID           NOT NULL
-                          , id_boost        UUID               NULL
+                          , uId_anunciante  UUID           NOT NULL
+                          , uId_boost       UUID               NULL
                           , CHECK ( nValor > 0 AND iQntPessoas_max > 0 AND
                                     cStatus in ('0', '1')        AND
                                     iQnt_quartos > 0           AND
@@ -76,7 +76,7 @@ CREATE TABLE Anuncio_casa ( id              UUID           PRIMARY KEY DEFAULT g
                                   )
                           );
 
-CREATE TABLE Faculdade ( id      UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Faculdade ( uId     UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                        , cNome   VARCHAR(100)     NULL
                        , cCEP    VARCHAR(8)   NOT NULL
                        , cRua    VARCHAR(100) NOT NULL
@@ -87,12 +87,12 @@ CREATE TABLE Faculdade ( id      UUID         PRIMARY KEY DEFAULT gen_random_uui
                        , UNIQUE(cNome)
                        );
 
-CREATE TABLE Filtros ( id    UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Filtros ( uId   UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                      , cNome VARCHAR(100) NOT NULL
                      , UNIQUE (cNome)
                      );
 
-CREATE TABLE Boost ( id          UUID           PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Boost ( uId         UUID           PRIMARY KEY DEFAULT gen_random_uuid()
                    , cTipo_boost VARCHAR(50)    NOT NULL
                    , nValor      DECIMAL(10, 2) NOT NULL
                    , nPct_boost  DECIMAL(10, 1) NOT NULL
@@ -101,7 +101,7 @@ CREATE TABLE Boost ( id          UUID           PRIMARY KEY DEFAULT gen_random_u
                            )
                    );
 
-CREATE TABLE Anunciante ( id           UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Anunciante ( uId          UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                         , cCPF         VARCHAR(14)  NOT NULL
                         , cNome        VARCHAR(100) NOT NULL
                         , cUsername    VARCHAR(100) NOT NULL
@@ -110,7 +110,7 @@ CREATE TABLE Anunciante ( id           UUID         PRIMARY KEY DEFAULT gen_rand
                         , cPlano       CHAR(1)      NOT NULL   DEFAULT '0'
                         , cDescricao   TEXT             NULL
                         , cFoto_perfil TEXT             NULL
-                        , CHECK ( cPlano in ('0', '1')                     AND
+                        , CHECK ( cPlano ~* '^(0|1)$'                     AND
                                   cCPF LIKE ~* '^[0-9]\{3\}.\?[0-9]\{3\}.\?[0-9]\{3\}-\?[0-9]\{2\}$'
                               )
                         , UNIQUE (cEmail)
@@ -118,24 +118,24 @@ CREATE TABLE Anunciante ( id           UUID         PRIMARY KEY DEFAULT gen_rand
                         , UNIQUE (cUsername)
                         );
 
-CREATE TABLE Pagamento ( id                UUID           PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Pagamento ( uId               UUID           PRIMARY KEY DEFAULT gen_random_uuid()
                        , cTipo_pgto        VARCHAR(50)    NOT NULL
                        , cAtivo            CHAR(1)        NOT NULL    DEFAULT '-1'
                        , dDt_fim           DATE           NOT NULL
                        , nPct_desconto     DECIMAL(10, 2)     NULL    DEFAULT 0
                        , nTotal            DECIMAL(10, 2) NOT NULL
-                       , id_anunciante     UUID               NULL
-                       , id_plano          UUID           NOT NULL
-                       , id_universitario  UUID               NULL
-                       , CHECK ( nTotal > 0                                                  AND
-                                 cAtivo ~* '^(-1|0|1)$'                                      AND
-                                 nPct_desconto > 0                                           AND
-                                (id_anunciante IS NOT NULL OR id_universitario IS NOT NULL) AND
-                                (id_anunciante IS NULL OR id_universitario IS NULL)
+                       , uId_anunciante    UUID               NULL
+                       , uId_plano         UUID           NOT NULL
+                       , uId_universitario UUID               NULL
+                       , CHECK ( nTotal > 0                                                   AND
+                                 cAtivo ~* '^(-1|0|1)$'                                       AND
+                                 nPct_desconto > 0                                            AND
+                                (uId_anunciante IS NOT NULL OR uId_universitario IS NOT NULL) AND
+                                (uId_anunciante IS NULL OR uId_universitario IS NULL)
                                )
                        );
 
-CREATE TABLE Plano ( id         UUID           PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Plano ( uId        UUID           PRIMARY KEY DEFAULT gen_random_uuid()
                    , cNome      VARCHAR(100)   NOT NULL
                    , nValor     DECIMAL(10, 2) NOT NULL
                    , cDescricao TEXT           NOT NULL
@@ -143,91 +143,94 @@ CREATE TABLE Plano ( id         UUID           PRIMARY KEY DEFAULT gen_random_uu
                    , UNIQUE(cNome)
                    );
 
-CREATE TABLE Plano_vantagem ( id UUID PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Plano_vantagem ( uId       UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                             , cVantagem VARCHAR(100) NOT NULL
-                            , cAtivo CHAR(1) NOT NULL DEFAULT '0'
-                            , id_plano UUID NOT NULL
+                            , cAtivo    CHAR(1)      NOT NULL DEFAULT '0'
+                            , uId_plano UUID         NOT NULL
                             , CHECK (cAtivo ~* '^(0|1)$')
-                            , UNIQUE (cVantagem, id_plano)
+                            , UNIQUE (cVantagem, uId_plano)
                             );
 
-CREATE TABLE Chat ( id                UUID        PRIMARY KEY DEFAULT gen_random_uuid()
-                  , id_remetente      UUID        NOT NULL
+CREATE TABLE Chat ( uId               UUID        PRIMARY KEY DEFAULT gen_random_uuid()
+                  , uId_remetente     UUID        NOT NULL
                   , cMensagem         TEXT        NOT NULL
                   , dHorario_envio    TIME        NOT NULL    DEFAULT CURRENT_TIME AT TIME ZONE 'America/Sao_Paulo'
                   , dDt_mensagem      DATE        NOT NULL    DEFAULT CURRENT_DATE
                   , cStatus           VARCHAR(20) NOT NULL    DEFAULT '-1'
-                  , id_universitario  UUID            NULL
-                  , id_anuncio        UUID            NULL
-                  , id_forum          UUID            NULL
+                  , uId_universitario UUID            NULL
+                  , uId_anuncio       UUID            NULL
+                  , uId_forum         UUID            NULL
                   , CHECK ( cStatus ~* '^(-1|0|1)$'                               AND
-                            NOT (id_universitario IS NULL AND id_anuncio IS NULL)
+                            NOT (uId_universitario IS NULL AND uId_anuncio IS NULL)
                           )
                   );
-CREATE TABLE Telefone_Anunciante ( id             UUID        PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Telefone_Anunciante ( uId            UUID        PRIMARY KEY DEFAULT gen_random_uuid()
                                  , cPrefixo       VARCHAR(5)  NOT NULL    DEFAULT '+55'
                                  , cTel           VARCHAR(20) NOT NULL
-                                 , id_anunciante  UUID        NOT NULL
+                                 , uId_anunciante UUID        NOT NULL
                                  , CHECK  ( cPrefixo ~* '^+[0-9].*$' AND
                                             cTel ~* '^(\?[0-9]\{2\}[) ]\? \?[0-9]\{5\}[- ]\?\{4\}$'
                                           )
                                  , UNIQUE (cTel)
                                  );
 
-CREATE TABLE Foto ( id          UUID PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Foto ( uId         UUID PRIMARY KEY DEFAULT gen_random_uuid()
                   , cUrl        TEXT     NULL
-                  , id_anuncio  UUID NOT NULL
-); 
+                  , uId_anuncio UUID NOT NULL
+                  );
 
-CREATE TABLE Telefone_Universitario ( id                UUID        PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE Telefone_Universitario ( uId               UUID        PRIMARY KEY DEFAULT gen_random_uuid()
                                     , cPrefixo          VARCHAR(5)  NOT NULL    DEFAULT '+55'
                                     , cTel              VARCHAR(20) NOT NULL
-                                    , id_universitario  UUID        NOT NULL
+                                    , uId_universitario UUID        NOT NULL
                                     , CHECK  ( cPrefixo ~* '^+[0-9].*$' AND
                                                cTel ~* '^(\?[0-9]\{2\}[) ]\? \?[0-9]\{5\}[- ]\?\{4\}$'
                                              )
                                     , UNIQUE (cTel)
                                     );
 
-CREATE TABLE Universitario_Filtro ( id                UUID PRIMARY KEY DEFAULT gen_random_uuid()
-                                  , id_filtros        UUID NOT NULL
-                                  , id_universitario  UUID NOT NULL
+CREATE TABLE Universitario_Filtro ( uId               UUID PRIMARY KEY DEFAULT gen_random_uuid()
+                                  , uId_filtros       UUID NOT NULL
+                                  , uId_universitario UUID NOT NULL
                                   );
 
-CREATE TABLE Anuncio_Filtro ( id          UUID PRIMARY KEY DEFAULT gen_random_uuid()
-                            , id_filtros  UUID NOT NULL
-                            , id_anuncio  UUID NOT NULL
+CREATE TABLE Anuncio_Filtro ( uId         UUID PRIMARY KEY DEFAULT gen_random_uuid()
+                            , uId_filtros UUID NOT NULL
+                            , uId_anuncio UUID NOT NULL
                             );
-CREATE TABLE Anuncio_Faculdade ( id UUID PRIMARY KEY DEFAULT gen_random_uuid()
-                               , id_anuncio UUID NOT NULL
-                               , id_faculdade UUID NOT NULL
-                                --PRIMARY KEY (id_anuncio, id_faculdade)
+CREATE TABLE Anuncio_Faculdade ( uId           UUID PRIMARY KEY DEFAULT gen_random_uuid()
+                               , uId_anuncio   UUID NOT NULL
+                               , uId_faculdade UUID NOT NULL
+                                --PRIMARY KEY (uId_anuncio, uId_faculdade)
                                );
-CREATE TABLE Forum ( id         UUID         PRIMARY KEY DEFAULT gen_random_uuid()
-                   , cNome      VARCHAR(100) NOT NULL
-                   , id_adm     UUID         NOT NULL
+CREATE TABLE Forum ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+                   , cNome      VARCHAR(100) NOT NULL    DEFAULT (SELECT cNmMoradia
+                                                                    FROM Anuncio_casa
+                                                                   WHERE Anuncio_casa.uId = uId_adm
+                                                                 )
+                   , uId_adm    UUID         NOT NULL
                    , cDescricao TEXT             NULL
                    );
 
 
 
-ALTER TABLE Universitario          ADD FOREIGN KEY (id_anuncio)       REFERENCES Anuncio_casa  (id);
-ALTER TABLE Universitario          ADD FOREIGN KEY (id_faculdade)     REFERENCES Faculdade     (id);
-ALTER TABLE Anuncio_casa           ADD FOREIGN KEY (id_anunciante)    REFERENCES Anunciante    (id);
-ALTER TABLE Anuncio_casa           ADD FOREIGN KEY (id_boost)         REFERENCES Boost         (id);
-ALTER TABLE Pagamento              ADD FOREIGN KEY (id_anunciante)    REFERENCES Anunciante    (id);
-ALTER TABLE Pagamento              ADD FOREIGN KEY (id_plano)         REFERENCES Plano         (id);
-ALTER TABLE Pagamento              ADD FOREIGN KEY (id_universitario) REFERENCES Universitario (id);
-ALTER TABLE Plano_vantagem         ADD FOREIGN KEY (id_plano)         REFERENCES Plano         (id);   
-ALTER TABLE Chat                   ADD FOREIGN KEY (id_universitario) REFERENCES Universitario (id);
-ALTER TABLE Chat                   ADD FOREIGN KEY (id_anuncio)       REFERENCES Anuncio_casa  (id);
-ALTER TABLE Chat                   ADD FOREIGN KEY (id_forum)         REFERENCES Forum         (id);
-ALTER TABLE Telefone_Anunciante    ADD FOREIGN KEY (id_anunciante)    REFERENCES Anunciante    (id);
-ALTER TABLE Foto                   ADD FOREIGN KEY (id_anuncio)       REFERENCES Anuncio_casa  (id);
-ALTER TABLE Telefone_Universitario ADD FOREIGN KEY (id_universitario) REFERENCES Universitario (id);
-ALTER TABLE Universitario_Filtro   ADD FOREIGN KEY (id_filtros)       REFERENCES Filtros       (id);
-ALTER TABLE Universitario_Filtro   ADD FOREIGN KEY (id_universitario) REFERENCES Universitario (id);
-ALTER TABLE Anuncio_Filtro         ADD FOREIGN KEY (id_filtros)       REFERENCES Filtros       (id);
-ALTER TABLE Anuncio_Filtro         ADD FOREIGN KEY (id_anuncio)       REFERENCES Anuncio_casa  (id);
-ALTER TABLE Anuncio_Faculdade      ADD FOREIGN KEY (id_faculdade)     REFERENCES Faculdade     (id);
-ALTER TABLE Anuncio_Faculdade      ADD FOREIGN KEY (id_anuncio)       REFERENCES Anuncio_casa  (id);
+ALTER TABLE Universitario          ADD FOREIGN KEY (uId_anuncio)       REFERENCES Anuncio_casa  (uId);
+ALTER TABLE Universitario          ADD FOREIGN KEY (uId_faculdade)     REFERENCES Faculdade     (uId);
+ALTER TABLE Anuncio_casa           ADD FOREIGN KEY (uId_anunciante)    REFERENCES Anunciante    (uId);
+ALTER TABLE Anuncio_casa           ADD FOREIGN KEY (uId_boost)         REFERENCES Boost         (uId);
+ALTER TABLE Pagamento              ADD FOREIGN KEY (uId_anunciante)    REFERENCES Anunciante    (uId);
+ALTER TABLE Pagamento              ADD FOREIGN KEY (uId_plano)         REFERENCES Plano         (uId);
+ALTER TABLE Pagamento              ADD FOREIGN KEY (uId_universitario) REFERENCES Universitario (uId);
+ALTER TABLE Plano_vantagem         ADD FOREIGN KEY (uId_plano)         REFERENCES Plano         (uId);
+ALTER TABLE Chat                   ADD FOREIGN KEY (uId_universitario) REFERENCES Universitario (uId);
+ALTER TABLE Chat                   ADD FOREIGN KEY (uId_anuncio)       REFERENCES Anuncio_casa  (uId);
+ALTER TABLE Chat                   ADD FOREIGN KEY (uId_forum)         REFERENCES Forum         (uId);
+ALTER TABLE Telefone_Anunciante    ADD FOREIGN KEY (uId_anunciante)    REFERENCES Anunciante    (uId);
+ALTER TABLE Foto                   ADD FOREIGN KEY (uId_anuncio)       REFERENCES Anuncio_casa  (uId);
+ALTER TABLE Telefone_Universitario ADD FOREIGN KEY (uId_universitario) REFERENCES Universitario (uId);
+ALTER TABLE Universitario_Filtro   ADD FOREIGN KEY (uId_filtros)       REFERENCES Filtros       (uId);
+ALTER TABLE Universitario_Filtro   ADD FOREIGN KEY (uId_universitario) REFERENCES Universitario (uId);
+ALTER TABLE Anuncio_Filtro         ADD FOREIGN KEY (uId_filtros)       REFERENCES Filtros       (uId);
+ALTER TABLE Anuncio_Filtro         ADD FOREIGN KEY (uId_anuncio)       REFERENCES Anuncio_casa  (uId);
+ALTER TABLE Anuncio_Faculdade      ADD FOREIGN KEY (uId_faculdade)     REFERENCES Faculdade     (uId);
+ALTER TABLE Anuncio_Faculdade      ADD FOREIGN KEY (uId_anuncio)       REFERENCES Anuncio_casa  (uId);
