@@ -89,8 +89,9 @@ CREATE TABLE Faculdade ( uId     UUID         PRIMARY KEY DEFAULT gen_random_uui
                        , UNIQUE(cNome)
                        );
 
-CREATE TABLE Filtros ( uId   UUID         PRIMARY KEY DEFAULT gen_random_uuid()
-                     , cNome VARCHAR(100) NOT NULL
+CREATE TABLE Filtros ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+                     , cNome      VARCHAR(100) NOT NULL
+                     , cCategoria VARCHAR(100) NOT NULL
                      , UNIQUE (cNome)
                      );
 
