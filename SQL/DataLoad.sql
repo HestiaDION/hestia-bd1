@@ -1,9 +1,9 @@
 -- MUDAR TODOS OS ID PARA UUID AO INVÉS DE NUM
-INSERT INTO admin ( nome
+INSERT INTO admin ( cNome
 
-				  , email
+				  , cEmail
 
-				  , senha
+				  , cSenha
 
 				  )
 
@@ -17,19 +17,19 @@ INSERT INTO admin ( nome
 
 				  ;
 
-INSERT INTO faculdade ( uf
+INSERT INTO faculdade ( cUf
 
-					  , cep
+					  , cCep
 
-					  , cidade
+					  , cCidade
 
-					  , rua
+					  , cRua
 
-					  , bairro
+					  , cBairro
 
-					  , numero
+					  , iNumero
 
-					  , nome
+					  , cNome
 
 					  )
 
@@ -213,23 +213,21 @@ INSERT INTO faculdade ( uf
 
 					  ;
 
-INSERT INTO anunciante ( cpf
+INSERT INTO anunciante ( cCpf
 
-					   , nome
+					   , cNome
 
-					   , username
+					   , cUsername
 
-					   , email
+					   , cEmail
 
-					   , senha
+					   , cSenha
 
-					   , plano
+					   , cPlano
 
-					   , descricao
+					   , cDescricao
 
-					   , foto_perfil
-
-					   , 
+					   , cFoto_perfil
 
 					   ) 
 
@@ -299,45 +297,45 @@ para manter a ordem e evitar qualquer inconveniente, estabeleci algumas regras c
 
 					   ;
 
-INSERT INTO anuncio_casa ( cep
+INSERT INTO anuncio_casa ( cCep
 
-						 , tipo_moradia
+						 , cTipo_moradia
 
-						 , numero
+						 , iNumCasa
 
-						 , rua
+						 , cRua
 
-						 , bairro
+						 , cBairro
 
-						 , cidade
+						 , cCidade
 
-						 , uf
+						 , cUf
 
-						 , quant_quartos
+						 , iQuant_quartos
 
-						 , quant_max
+						 , iQuant_max
 
-						 , valor
+						 , nValor
 
-						 , status
+						 , cStatus
 
-						 , dt_inicio
+						 , dDt_inicio
 
-						 , dt_expiracao
+						 , dDt_expiracao
 
-						 , faculdade
+						 , cFaculdade
 
-						 , ponto_ref
+						 , cPonto_ref
 
-						 , regras
+						 , cRegras
 
-						 , id_anunciante
+						 , uId_anunciante
 						  
-						 , id_boost
+						 , uId_boost
 
 						 )
 
-				  VALUES ( 12345678
+				  VALUES ( '12345678'
 
 						 , 'Apartamento'
 
@@ -375,7 +373,7 @@ INSERT INTO anuncio_casa ( cep
 
 						 )
 
-					   , (98765432
+					   , ( '98765432'
 
 						 , 'Casa'
 
@@ -403,9 +401,9 @@ INSERT INTO anuncio_casa ( cep
 
 						 , 'Universidade do Estado do Rio de Janeiro'
 
-						 ,'Maracanã'
+						 , 'Maracanã'
 
-						 ,'Manter as áreas comuns limpas, não tocar instrumentos musicais após às 21h'
+						 , 'Manter as áreas comuns limpas, não tocar instrumentos musicais após às 21h'
 
 						 , (SELECT id FROM anunciante WHERE username = 'robcarvalho')
 						  
@@ -454,20 +452,36 @@ INSERT INTO anuncio_casa ( cep
 						 ;
 
 
-INSERT INTO universitario (dne, nome, username, email, senha, genero, plano, foto_perfil, descricao, id_anuncio,
-
-						   id_faculdade)
+INSERT INTO universitario ( cDne
+						  , cNome
+						  , cUsername
+						  , cEmail
+						  , cSenha
+						  , cGenero
+						  , cPlano
+						  , cFoto_perfil
+						  , cDescricao
+						  , uId_anuncio
+						  , uId_faculdade
+						  )
 
 						   VALUES 
 
-						   (1023456789, 'Laura Pereira', 'laura.pereira', 'laura.pereira@gmail.com', 'L@ura2024!', 'Feminino', 'A', 
+						   ( '1023456789'
+						   , 'Laura Pereira'
+						   , 'laura.pereira'
+						   , 'laura.pereira@gmail.com'
+						   , 'L@ura2024!'
+						   , 'Feminino'
+						   , 'A'
+						   , 'https://example.com/perfil_laura.jpg'
+						   , 'Estudante de arquitetura apaixonada por design sustentável e arquitetura minimalista. Gosto de viajar e explorar novos lugares.'
+						   , (SELECT id FROM anuncio WHERE nome = '')
+						   , (SELECT id FROM faculdade WHERE nome = 'Universidade Presbiteriana Mackenzie')
+						   )
+						   ,
 
-							'https://example.com/perfil_laura.jpg',
-
-						   'Estudante de arquitetura apaixonada por design sustentável e arquitetura minimalista. Gosto de viajar e explorar novos lugares.',
-							(SELECT id FROM anuncio WHERE nome = ''), (SELECT id FROM faculdade WHERE nome = 'Universidade Presbiteriana Mackenzie')),
-
-						   (2034567890, 'Thiago Almeida', 'thiago.almeida', 'thiago.almeida@rjmail.com', 'Th!agoRJ2024', 'Masculino', 'A', 
+						   ('2034567890', 'Thiago Almeida', 'thiago.almeida', 'thiago.almeida@rjmail.com', 'Th!agoRJ2024', 'Masculino', 'A', 
 
 							'https://example.com/perfil_thiago.jpg',
 
@@ -475,17 +489,17 @@ INSERT INTO universitario (dne, nome, username, email, senha, genero, plano, fot
 
 							7, (SELECT id FROM faculdade WHERE nome = 'Pontifícia Universidade Católica (PUC-SP)')),
 
-						   (3045678901, 'Mariana Souza', 'souzamari', 'mariana.souza@mgmail.com', 'Mar!anaMG2024', 'Feminino', 'I', 'https://example.com/perfil_mariana.jpg',
+						   ('3045678901', 'Mariana Souza', 'souzamari', 'mariana.souza@mgmail.com', 'Mar!anaMG2024', 'Feminino', 'I', 'https://example.com/perfil_mariana.jpg',
 
 						   'Mineira de coração, estudo medicina veterinária na UFMG. Amo animais e a natureza. Nas horas vagas, gosto de fazer trilhas e descobrir novos lugares.', 
 
 							4, (SELECT id FROM faculdade WHERE nome = 'Universidade de São Paulo (USP)');
 
-INSERT INTO forum (nome
+INSERT INTO forum ( cNome
 
-				  , id_adm
+				  , uId_adm
 
-				  , descricao
+				  , cDescricao
 
 				  ) 
 
@@ -499,19 +513,19 @@ INSERT INTO forum (nome
 
 				  ;
 
-INSERT INTO chat ( id_remetente
+INSERT INTO chat ( uId_remetente
 
-				 , mensagem
+				 , cMensagem
 
-				 , horario_envio
+				 , dHorario_envio
 
-				 , dt_mensagem
+				 , dDt_mensagem
 
-				 , status
+				 , cStatus
 
-				 , id_universitario
+				 , uId_universitario
 
-				 , id_anuncio
+				 , uId_anuncio
 
 				 ) 
 
@@ -533,25 +547,25 @@ INSERT INTO chat ( id_remetente
 
 				 ;
 
-INSERT INTO telefone_anunciante ( tel
+INSERT INTO telefone_anunciante ( cTel
 
-								, id_anunciante
+								, uId_anunciante
 
 								)
 
-						 VALUES ( 11912345678
+						 VALUES ( '11912345678'
 
 								, 1
 
 								)
 
-							 ,  ( 21987654321
+							 ,  ( '21987654321'
 
 								, 2
 
 								)
 
-							 ,  ( 31246801357
+							 ,  ( '31246801357'
 
 							    , 3
 
@@ -559,25 +573,25 @@ INSERT INTO telefone_anunciante ( tel
 
 								;
 
-INSERT INTO telefone_universitario ( tel
+INSERT INTO telefone_universitario ( cTel
 
 								   , id_universitario
 
 								   ) 	   
 
-						    VALUES ( 119123456333
+						    VALUES ( '119123456333'
 
 								   , 1
 
 								   )
 
-								 , ( 21987654699
+								 , ( '21987654699'
 
 								   , 2
 
 								   )
 
-								 , ( 31246801377
+								 , ( '31246801377'
 
 								   , 3
 
@@ -585,9 +599,9 @@ INSERT INTO telefone_universitario ( tel
 
 								   ;
 
-INSERT INTO foto ( url
+INSERT INTO foto ( cUrl
 
-				 , id_anuncio
+				 , uId_anuncio
 
 				 ) 
 
@@ -615,9 +629,9 @@ INSERT INTO foto ( url
 
 				 ;
 
-INSERT INTO universitario_filtro (id_filtros
+INSERT INTO universitario_filtro ( uId_filtros
 
-								 , id_universitario
+								 , uId_universitario
 
 								 ) 
 
@@ -653,9 +667,9 @@ INSERT INTO universitario_filtro (id_filtros
 
 								 ;
 
-INSERT INTO anuncio_filtro ( id_filtros
+INSERT INTO anuncio_filtro ( uId_filtros
 
-						   , id_anuncio
+						   , uId_anuncio
 
 						   ) 
 
@@ -690,3 +704,6 @@ INSERT INTO anuncio_filtro ( id_filtros
 						   )
 
 						   ;
+							
+CREATE OR ALTER PROCEDURE dbo.SP_InserirPorFk
+( @A)
