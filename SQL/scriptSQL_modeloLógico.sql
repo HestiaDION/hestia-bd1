@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE Admin ( uId    UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                    , cNome  VARCHAR(100) NOT NULL
                    , cEmail VARCHAR(266) NOT NULL
-                   , cEenha VARCHAR(100) NOT NULL
+                   , cSenha VARCHAR(100) NOT NULL
                    , UNIQUE(cEmail)
                    );
 
@@ -98,7 +98,7 @@ CREATE TABLE Filtros ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uu
 CREATE TABLE Boost ( uId         UUID           PRIMARY KEY DEFAULT gen_random_uuid()
                    , cTipo_boost VARCHAR(50)    NOT NULL
                    , nValor      DECIMAL(10, 2) NOT NULL
-                   , nPct_boost  DECIMAL(10, 1) NOT NULL
+                   , nPct_boost  DECIMAL(3, 1)  NOT NULL
                    , CHECK ( nValor > 0      AND
                              nPct_boost >0
                            )
@@ -125,16 +125,22 @@ CREATE TABLE Pagamento ( uId               UUID           PRIMARY KEY DEFAULT ge
                        , cTipo_pgto        VARCHAR(50)    NOT NULL
                        , cAtivo            CHAR(1)        NOT NULL    DEFAULT '-1'
                        , dDt_fim           DATE           NOT NULL
-                       , nPct_desconto     DECIMAL(10, 2)     NULL    DEFAULT 0
+                       , nPct_desconto     DECIMAL(3, 1)      NULL    DEFAULT 0
                        , nTotal            DECIMAL(10, 2) NOT NULL
                        , uId_anunciante    UUID               NULL
                        , uId_plano         UUID           NOT NULL
                        , uId_universitario UUID               NULL
+<<<<<<< HEAD
+                       , CHECK ( nTotal        >  0                                           AND
+                                 cAtivo        ~* '^(-1|0|1)$'                                AND
+                                 nPct_desconto >= 0                                           AND
+=======
                        , CHECK ( nTotal > 0                                                   AND
                                  cAtivo ~ '^(-1|0|1)$'                                        AND
                                  nPct_desconto > 0                                            AND
+>>>>>>> 166c73105c11924ec3848300e7aceae3ff61c2c8
                                 (uId_anunciante IS NOT NULL OR uId_universitario IS NOT NULL) AND
-                                (uId_anunciante IS NULL OR uId_universitario IS NULL)
+                                (uId_anunciante IS     NULL OR uId_universitario IS     NULL)
                                )
                        );
 
@@ -209,7 +215,14 @@ CREATE TABLE Anuncio_Faculdade ( uId           UUID PRIMARY KEY DEFAULT gen_rand
 
 
 CREATE TABLE Forum ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+<<<<<<< HEAD
+                   , cNome      VARCHAR(100) NOT NULL    DEFAULT (SELECT Anuncio_casa.cNmMoradia
+                                                                    FROM Anuncio_casa
+                                                                   WHERE Anuncio_casa.uId = Forum.uId_adm
+                                                                 )
+=======
                    , cNome      VARCHAR(100) NOT NULL
+>>>>>>> 166c73105c11924ec3848300e7aceae3ff61c2c8
                    , uId_adm    UUID         NOT NULL
                    , cDescricao TEXT             NULL
                    );
