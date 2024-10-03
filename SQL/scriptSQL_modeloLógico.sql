@@ -42,7 +42,7 @@ CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_
                            , cDescricao    TEXT             NULL
                            , uId_anuncio   UUID             NULL
                            , uId_faculdade UUID         NOT NULL
-                           , CHECK ( cPlano in ('0', '1')                                          AND
+                           , CHECK ( cPlano ~* '(0|1)'                                           AND
                                      cEmail ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
                                    )
                            , UNIQUE (cUsername)
@@ -70,8 +70,8 @@ CREATE TABLE Anuncio_casa ( uId             UUID           PRIMARY KEY DEFAULT g
                           , uId_anunciante  UUID           NOT NULL
                           , uId_boost       UUID               NULL
                           , CHECK ( nValor > 0 AND iQntPessoas_max > 0 AND
-                                    cStatus in ('0', '1')        AND
-                                    iQnt_quartos > 0           AND
+                                    cStatus ~* '(0|1)'                 AND
+                                    iQnt_quartos > 0                   AND
                                     iNumCasa > 0
                                   )
                           );
@@ -201,7 +201,6 @@ CREATE TABLE Anuncio_Filtro ( uId         UUID PRIMARY KEY DEFAULT gen_random_uu
 CREATE TABLE Anuncio_Faculdade ( uId           UUID PRIMARY KEY DEFAULT gen_random_uuid()
                                , uId_anuncio   UUID NOT NULL
                                , uId_faculdade UUID NOT NULL
-                                --PRIMARY KEY (uId_anuncio, uId_faculdade)
                                );
 CREATE TABLE Forum ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                    , cNome      VARCHAR(100) NOT NULL    DEFAULT (SELECT cNmMoradia
