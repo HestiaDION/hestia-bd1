@@ -1,25 +1,26 @@
 -- SCRIPT PARA A GERAÇÃO DO BANCO
 -- 21/08 15:00
 --  LINK PARA O MODELO LÓGICO UTILIZADO => https://app.brmodeloweb.com/#!/publicview/66c62a7254bfb2f81899fe61
+-- CREATE DATABASE Hestia;
 
--- DROP TABLE Admin;
--- DROP TABLE Anuncio_Filtro;
--- DROP TABLE Chat;
--- DROP TABLE Universitario_Filtro;
--- DROP TABLE Telefone_Universitario;
--- DROP TABLE Foto;
--- DROP TABLE Telefone_Anunciante;
--- DROP TABLE Forum;
--- DROP TABLE Plano_vantagem;
--- DROP TABLE Anuncio_Faculdade;
--- DROP TABLE Faculdade CASCADE;
--- DROP TABLE Filtros CASCADE;
--- DROP TABLE Anunciante CASCADE;
--- DROP TABLE Plano CASCADE;
--- DROP TABLE Universitario CASCADE;
--- DROP TABLE Anuncio_casa CASCADE;
--- DROP TABLE Boost CASCADE;
--- DROP TABLE Pagamento CASCADE;
+DROP TABLE Admin;
+DROP TABLE Anuncio_Filtro;
+DROP TABLE Chat;
+DROP TABLE Universitario_Filtro;
+DROP TABLE Telefone_Universitario;
+DROP TABLE Foto;
+DROP TABLE Telefone_Anunciante;
+DROP TABLE Forum;
+DROP TABLE Plano_vantagem;
+DROP TABLE Anuncio_Faculdade;
+DROP TABLE Faculdade CASCADE;
+DROP TABLE Filtros CASCADE;
+DROP TABLE Anunciante CASCADE;
+DROP TABLE Plano CASCADE;
+DROP TABLE Universitario CASCADE;
+DROP TABLE Anuncio_casa CASCADE;
+DROP TABLE Boost CASCADE;
+DROP TABLE Pagamento CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
@@ -42,8 +43,8 @@ CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_
                            , cDescricao    TEXT             NULL
                            , uId_anuncio   UUID             NULL
                            , uId_faculdade UUID         NOT NULL
-                           , CHECK ( cPlano ~* '(0|1)'                                           AND
-                                     cEmail ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+                           , CHECK ( cPlano ~ '(0|1)'                                           AND
+                                     cEmail ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
                                    )
                            , UNIQUE (cUsername)
                            , UNIQUE (cEmail)
@@ -69,9 +70,10 @@ CREATE TABLE Anuncio_casa ( uId             UUID           PRIMARY KEY DEFAULT g
                           , cRegras         TEXT               NULL
                           , uId_anunciante  UUID           NOT NULL
                           , uId_boost       UUID               NULL
-                          , CHECK ( nValor > 0 AND iQntPessoas_max > 0 AND
-                                    cStatus ~* '(0|1)'                 AND
-                                    iQnt_quartos > 0                   AND
+                          , CHECK ( nValor > 0          AND
+                                    iQntPessoas_max > 0 AND
+                                    cStatus ~ '(0|1)'   AND
+                                    iQnt_quartos > 0    AND
                                     iNumCasa > 0
                                   )
                           );
@@ -83,7 +85,7 @@ CREATE TABLE Faculdade ( uId     UUID         PRIMARY KEY DEFAULT gen_random_uui
                        , cBairro VARCHAR(100) NOT NULL
                        , cCidade VARCHAR(100) NOT NULL
                        , cUF     VARCHAR(2)   NOT NULL
-                       , CHECK (cCEP LIKE ~* '^[0-9]\{5\}-\?[0-9]\{3\}$' )
+                       , CHECK (cCEP ~ '^[0-9]\{5\}-\?[0-9]\{3\}$' )
                        , UNIQUE(cNome)
                        );
 
@@ -110,8 +112,8 @@ CREATE TABLE Anunciante ( uId          UUID         PRIMARY KEY DEFAULT gen_rand
                         , cPlano       CHAR(1)      NOT NULL   DEFAULT '0'
                         , cDescricao   TEXT             NULL
                         , cFoto_perfil TEXT             NULL
-                        , CHECK ( cPlano ~* '^(0|1)$'                     AND
-                                  cCPF LIKE ~* '^[0-9]\{3\}.\?[0-9]\{3\}.\?[0-9]\{3\}-\?[0-9]\{2\}$'
+                        , CHECK ( cPlano ~ '^(0|1)$'                                                AND
+                                  cCPF ~ '^[0-9]\{3\}.\?[0-9]\{3\}.\?[0-9]\{3\}-\?[0-9]\{2\}$'
                               )
                         , UNIQUE (cEmail)
                         , UNIQUE (cCPF)
@@ -127,9 +129,15 @@ CREATE TABLE Pagamento ( uId               UUID           PRIMARY KEY DEFAULT ge
                        , uId_anunciante    UUID               NULL
                        , uId_plano         UUID           NOT NULL
                        , uId_universitario UUID               NULL
+<<<<<<< HEAD
                        , CHECK ( nTotal        >  0                                           AND
                                  cAtivo        ~* '^(-1|0|1)$'                                AND
                                  nPct_desconto >= 0                                           AND
+=======
+                       , CHECK ( nTotal > 0                                                   AND
+                                 cAtivo ~ '^(-1|0|1)$'                                        AND
+                                 nPct_desconto > 0                                            AND
+>>>>>>> 166c73105c11924ec3848300e7aceae3ff61c2c8
                                 (uId_anunciante IS NOT NULL OR uId_universitario IS NOT NULL) AND
                                 (uId_anunciante IS     NULL OR uId_universitario IS     NULL)
                                )
@@ -147,20 +155,20 @@ CREATE TABLE Plano_vantagem ( uId       UUID         PRIMARY KEY DEFAULT gen_ran
                             , cVantagem VARCHAR(100) NOT NULL
                             , cAtivo    CHAR(1)      NOT NULL DEFAULT '0'
                             , uId_plano UUID         NOT NULL
-                            , CHECK (cAtivo ~* '^(0|1)$')
+                            , CHECK (cAtivo ~ '^(0|1)$')
                             , UNIQUE (cVantagem, uId_plano)
                             );
 
 CREATE TABLE Chat ( uId               UUID        PRIMARY KEY DEFAULT gen_random_uuid()
                   , uId_remetente     UUID        NOT NULL
                   , cMensagem         TEXT        NOT NULL
-                  , dHorario_envio    TIME        NOT NULL    DEFAULT CURRENT_TIME AT TIME ZONE 'America/Sao_Paulo'
+                  , dHorario_envio    TIME        NOT NULL    DEFAULT (CURRENT_TIME AT TIME ZONE 'America/Sao_Paulo')
                   , dDt_mensagem      DATE        NOT NULL    DEFAULT CURRENT_DATE
                   , cStatus           VARCHAR(20) NOT NULL    DEFAULT '-1'
                   , uId_universitario UUID            NULL
                   , uId_anuncio       UUID            NULL
                   , uId_forum         UUID            NULL
-                  , CHECK ( cStatus ~* '^(-1|0|1)$'                               AND
+                  , CHECK ( cStatus ~ '^(-1|0|1)$'                                 AND
                             NOT (uId_universitario IS NULL AND uId_anuncio IS NULL)
                           )
                   );
@@ -168,8 +176,8 @@ CREATE TABLE Telefone_Anunciante ( uId            UUID        PRIMARY KEY DEFAUL
                                  , cPrefixo       VARCHAR(5)  NOT NULL    DEFAULT '+55'
                                  , cTel           VARCHAR(20) NOT NULL
                                  , uId_anunciante UUID        NOT NULL
-                                 , CHECK  ( cPrefixo ~* '^+[0-9].*$' AND
-                                            cTel ~* '^(\?[0-9]\{2\}[) ]\? \?[0-9]\{5\}[- ]\?\{4\}$'
+                                 , CHECK  ( cPrefixo ~ '^+[0-9].*$' AND
+                                            cTel ~ '^(\?[0-9]\{2\}[) ]\? \?[0-9]\{5\}[- ]\?\{4\}$'
                                           )
                                  , UNIQUE (cTel)
                                  );
@@ -183,8 +191,8 @@ CREATE TABLE Telefone_Universitario ( uId               UUID        PRIMARY KEY 
                                     , cPrefixo          VARCHAR(5)  NOT NULL    DEFAULT '+55'
                                     , cTel              VARCHAR(20) NOT NULL
                                     , uId_universitario UUID        NOT NULL
-                                    , CHECK  ( cPrefixo ~* '^+[0-9].*$' AND
-                                               cTel ~* '^(\?[0-9]\{2\}[) ]\? \?[0-9]\{5\}[- ]\?\{4\}$'
+                                    , CHECK  ( cPrefixo ~ '^+[0-9].*$'                               AND
+                                               cTel ~ '^(\?[0-9]\{2\}[) ]\? \?[0-9]\{5\}[- ]\?\{4\}$'
                                              )
                                     , UNIQUE (cTel)
                                     );
@@ -202,11 +210,18 @@ CREATE TABLE Anuncio_Faculdade ( uId           UUID PRIMARY KEY DEFAULT gen_rand
                                , uId_anuncio   UUID NOT NULL
                                , uId_faculdade UUID NOT NULL
                                );
+
+
+
 CREATE TABLE Forum ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+<<<<<<< HEAD
                    , cNome      VARCHAR(100) NOT NULL    DEFAULT (SELECT Anuncio_casa.cNmMoradia
                                                                     FROM Anuncio_casa
                                                                    WHERE Anuncio_casa.uId = Forum.uId_adm
                                                                  )
+=======
+                   , cNome      VARCHAR(100) NOT NULL
+>>>>>>> 166c73105c11924ec3848300e7aceae3ff61c2c8
                    , uId_adm    UUID         NOT NULL
                    , cDescricao TEXT             NULL
                    );
