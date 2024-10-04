@@ -707,3 +707,35 @@ INSERT INTO anuncio_filtro ( uId_filtros
 							
 CREATE OR ALTER PROCEDURE dbo.SP_InserirPorFk
 ( @A)
+
+insert into filtros(cnome, ccategoria) values ('Cachorro', 'animal');
+insert into filtros(cnome, ccategoria) values ('Gato', 'animal');
+insert into filtros(cnome, ccategoria) values ('Réptil', 'animal');
+insert into filtros(cnome, ccategoria) values ('Anfíbio', 'animal');
+insert into filtros(cnome, ccategoria) values ('Pássaro', 'animal');
+insert into filtros(cnome, ccategoria) values ('Não tenho', 'animal');
+insert into filtros(cnome, ccategoria) values ('Gosto muito', 'animal');
+insert into filtros(cnome, ccategoria) values ('Possuo alergia', 'animal');
+insert into filtros(cnome, ccategoria) values ('Não tenho, mas amo', 'animal');
+
+insert into filtros(cnome, ccategoria) values ('Mulheres', 'genero');
+insert into filtros(cnome, ccategoria) values ('Homens', 'genero');
+insert into filtros(cnome, ccategoria) values ('Não me importo', 'genero');
+insert into filtros(cnome, ccategoria) values ('Outros gêneros', 'genero');
+
+insert into filtros(cnome, ccategoria) values ('1', 'pessoa');
+insert into filtros(cnome, ccategoria) values ('2', 'pessoa');
+insert into filtros(cnome, ccategoria) values ('3', 'pessoa');
+insert into filtros(cnome, ccategoria) values ('4 ou mais', 'pessoa');
+
+insert into filtros(cnome, ccategoria) values ('Fumo socialmente', 'fumo');
+insert into filtros(cnome, ccategoria) values ('Não fumo', 'fumo');
+insert into filtros(cnome, ccategoria) values ('Fumante', 'fumo');
+insert into filtros(cnome, ccategoria) values ('Tentando parar', 'fumo');
+
+insert into filtros(cnome, ccategoria) values ('Não bebo', 'bebida');
+insert into filtros(cnome, ccategoria) values ('Bebo com moderação', 'bebida');
+insert into filtros(cnome, ccategoria) values ('Ocasiões especiais', 'bebida');
+insert into filtros(cnome, ccategoria) values ('Todo dia', 'bebida');
+insert into filtros(cnome, ccategoria) values ('Já bebi, mas não bebo mais', 'bebida');
+insert into filtros(cnome, ccategoria) values ('Socialmente, aos fins de semana', 'bebida');
