@@ -55,7 +55,7 @@ CREATE TABLE Anuncio_casa ( uId             UUID           PRIMARY KEY DEFAULT g
                           , cNmMoradia      VARCHAR(10)    NOT NULL    DEFAULT substring(gen_random_uuid()::text, 1, 10)
                           , cCEP            VARCHAR(9)     NOT NULL
                           , cTipo_moradia   VARCHAR(50)    NOT NULL
-                          , iNumCasa        INT            NOT NULL
+                          , iNumMoradia     INT            NOT NULL
                           , cRua            VARCHAR(100)   NOT NULL
                           , cBairro         VARCHAR(100)   NOT NULL
                           , cCidade         VARCHAR(100)   NOT NULL
@@ -66,26 +66,29 @@ CREATE TABLE Anuncio_casa ( uId             UUID           PRIMARY KEY DEFAULT g
                           , cStatus         CHAR(1)        NOT NULL    DEFAULT '1'
                           , dDt_inicio      DATE           NOT NULL    DEFAULT CURRENT_DATE
                           , dDt_expiracao   DATE           NOT NULL    DEFAULT CURRENT_DATE + INTERVAL '6 MONTH'
-                          , cPonto_ref      VARCHAR(100)       NULL
+                          , cComplemento    VARCHAR(100)       NULL
                           , cRegras         TEXT               NULL
                           , uId_anunciante  UUID           NOT NULL
                           , uId_boost       UUID               NULL
                           , CHECK ( nValor > 0          AND
                                     iQntPessoas_max > 0 AND
+                                    iNumMoradia > 0     AND
                                     cStatus ~ '(0|1)'   AND
-                                    iQnt_quartos > 0    AND
-                                    iNumCasa > 0
+                                    iQnt_quartos > 0
                                   )
                           );
 
-CREATE TABLE Faculdade ( uId     UUID         PRIMARY KEY DEFAULT gen_random_uuid()
-                       , cNome   VARCHAR(100)     NULL
-                       , cCEP    VARCHAR(8)   NOT NULL
-                       , cRua    VARCHAR(100) NOT NULL
-                       , cBairro VARCHAR(100) NOT NULL
-                       , cCidade VARCHAR(100) NOT NULL
-                       , cUF     VARCHAR(2)   NOT NULL
-                       , CHECK (cCEP ~ '^[0-9]\{5\}-\?[0-9]\{3\}$' )
+CREATE TABLE Faculdade ( uId         UUID         PRIMARY KEY DEFAULT gen_random_uuid()
+                       , cNome       VARCHAR(100)     NULL
+                       , cCEP        VARCHAR(8)   NOT NULL
+                       , iNumMoradia INT          NOT NULL
+                       , cRua        VARCHAR(100) NOT NULL
+                       , cBairro     VARCHAR(100) NOT NULL
+                       , cCidade     VARCHAR(100) NOT NULL
+                       , cUF         VARCHAR(2)   NOT NULL
+                       , CHECK ( iNumMoradia > 0                   AND
+                                 cCEP ~ '^[0-9]\{5\}-\?[0-9]\{3\}$'
+                               )
                        , UNIQUE(cNome)
                        );
 
@@ -130,15 +133,9 @@ CREATE TABLE Pagamento ( uId               UUID           PRIMARY KEY DEFAULT ge
                        , uId_anunciante    UUID               NULL
                        , uId_plano         UUID           NOT NULL
                        , uId_universitario UUID               NULL
-<<<<<<< HEAD
                        , CHECK ( nTotal        >  0                                           AND
-                                 cAtivo        ~* '^(-1|0|1)$'                                AND
+                                 cAtivo        ~  '^(-1|0|1)$'                                AND
                                  nPct_desconto >= 0                                           AND
-=======
-                       , CHECK ( nTotal > 0                                                   AND
-                                 cAtivo ~ '^(-1|0|1)$'                                        AND
-                                 nPct_desconto > 0                                            AND
->>>>>>> 166c73105c11924ec3848300e7aceae3ff61c2c8
                                 (uId_anunciante IS NOT NULL OR uId_universitario IS NOT NULL) AND
                                 (uId_anunciante IS     NULL OR uId_universitario IS     NULL)
                                )
@@ -173,6 +170,7 @@ CREATE TABLE Chat ( uId               UUID        PRIMARY KEY DEFAULT gen_random
                             NOT (uId_universitario IS NULL AND uId_anuncio IS NULL)
                           )
                   );
+
 CREATE TABLE Telefone_Anunciante ( uId            UUID        PRIMARY KEY DEFAULT gen_random_uuid()
                                  , cPrefixo       VARCHAR(5)  NOT NULL    DEFAULT '+55'
                                  , cTel           VARCHAR(20) NOT NULL
@@ -207,22 +205,14 @@ CREATE TABLE Anuncio_Filtro ( uId         UUID PRIMARY KEY DEFAULT gen_random_uu
                             , uId_filtros UUID NOT NULL
                             , uId_anuncio UUID NOT NULL
                             );
+
 CREATE TABLE Anuncio_Faculdade ( uId           UUID PRIMARY KEY DEFAULT gen_random_uuid()
                                , uId_anuncio   UUID NOT NULL
                                , uId_faculdade UUID NOT NULL
                                );
 
-
-
 CREATE TABLE Forum ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
-<<<<<<< HEAD
-                   , cNome      VARCHAR(100) NOT NULL    DEFAULT (SELECT Anuncio_casa.cNmMoradia
-                                                                    FROM Anuncio_casa
-                                                                   WHERE Anuncio_casa.uId = Forum.uId_adm
-                                                                 )
-=======
                    , cNome      VARCHAR(100) NOT NULL
->>>>>>> 166c73105c11924ec3848300e7aceae3ff61c2c8
                    , uId_adm    UUID         NOT NULL
                    , cDescricao TEXT             NULL
                    );
