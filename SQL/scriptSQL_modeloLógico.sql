@@ -113,6 +113,7 @@ CREATE TABLE Anunciante ( uId          UUID         PRIMARY KEY DEFAULT gen_rand
                         , cUsername    VARCHAR(100) NOT NULL
                         , cEmail       VARCHAR(266) NOT NULL
                         , cSenha       VARCHAR(100) NOT NULL
+                        , cGenero       VARCHAR(50) NOT NULL
                         , cPlano       CHAR(1)      NOT NULL   DEFAULT '0'
                         , cDescricao   TEXT             NULL
                         , cFoto_perfil TEXT             NULL
@@ -125,7 +126,7 @@ CREATE TABLE Anunciante ( uId          UUID         PRIMARY KEY DEFAULT gen_rand
                         );
 
 CREATE TABLE Pagamento ( uId               UUID           PRIMARY KEY DEFAULT gen_random_uuid()
-                       , cTipo_pgto        VARCHAR(50)    NOT NULL
+                       , cTipo_pgto        VARCHAR(50)        NULL
                        , cAtivo            CHAR(1)        NOT NULL    DEFAULT '-1'
                        , dDt_fim           DATE           NOT NULL
                        , nPct_desconto     DECIMAL(3, 1)      NULL    DEFAULT 0
@@ -133,8 +134,8 @@ CREATE TABLE Pagamento ( uId               UUID           PRIMARY KEY DEFAULT ge
                        , uId_anunciante    UUID               NULL
                        , uId_plano         UUID           NOT NULL
                        , uId_universitario UUID               NULL
-                       , CHECK ( nTotal        >  0                                           AND
-                                 cAtivo        ~  '^(-1|0|1)$'                                AND
+                       , CHECK ( nTotal >  0                                                  AND
+                                 cAtivo ~ '^(-1|0|1)$'                                        AND
                                  nPct_desconto >= 0                                           AND
                                 (uId_anunciante IS NOT NULL OR uId_universitario IS NOT NULL) AND
                                 (uId_anunciante IS     NULL OR uId_universitario IS     NULL)
@@ -142,7 +143,7 @@ CREATE TABLE Pagamento ( uId               UUID           PRIMARY KEY DEFAULT ge
                        );
 
 CREATE TABLE Plano ( uId        UUID           PRIMARY KEY DEFAULT gen_random_uuid()
-                   , cNome      VARCHAR(100)   NOT NULL
+                   , cNome      VARCHAR(50)    NOT NULL
                    , nValor     DECIMAL(10, 2) NOT NULL
                    , cDescricao TEXT           NOT NULL
                    , CHECK (nValor > 0)
