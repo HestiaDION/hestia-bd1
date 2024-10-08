@@ -74,7 +74,7 @@ CREATE OR REPLACE FUNCTION FN_AnuncioCasa_SetDefault_DtExpiracao()
     RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.dDtexpiracao IS NULL THEN
-        NEW.dDtexpiracao := NEW.dDtinicio + COALESCE(NEW.intervalo, INTERVAL '6 months');
+        NEW.dDtexpiracao := NEW.dDtinicio + INTERVAL '6 months';
     END IF;
     RETURN NEW;
 END;

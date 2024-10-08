@@ -1,4 +1,26 @@
--- MUDAR TODOS OS ID PARA UUID AO INVÉS DE NUM
+-- Script para a geração do DataLoad
+
+-- DELETES
+DELETE FROM Admin                  ;
+DELETE FROM Anuncio_Filtro         ;
+DELETE FROM Chat                   ;
+DELETE FROM Universitario_Filtro   ;
+DELETE FROM Telefone_Universitario ;
+DELETE FROM Foto_Anuncio           ;
+DELETE FROM Telefone_Anunciante    ;
+DELETE FROM Forum                  ;
+DELETE FROM Plano_vantagem         ;
+DELETE FROM Anuncio_Faculdade      ;
+DELETE FROM Universitario          ;
+DELETE FROM Faculdade              ;
+DELETE FROM Filtro                 ;
+DELETE FROM AnuncioCasa            ;
+DELETE FROM Anunciante             ;
+DELETE FROM Plano                  ;
+DELETE FROM Boost                  ;
+DELETE FROM Pagamento              ;
+
+--INSERTS
 INSERT INTO Admin ( cNome
 				  , cEmail
 				  , cSenha
@@ -118,7 +140,7 @@ INSERT INTO Anunciante ( cCpf
 Presbiteriana Mackenzie. Desejo que o local seja utilizado para fins estudantis e, para evitar conflitos ou multas, prefiro estabelecer algumas regras.'
 					   , 'https://example.com/perfil_julia.jpg'
 					   )
-					 , ( '0987654321'
+					 , ( '09876543210'
 					   , 'Roberto Carvalho'
 					   , 'robcarvalho'
 					   , 'carvalhorobert0@gmail.com'
@@ -175,7 +197,7 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
 						 , 2500.00
 						 , '0'
 						 , '2024-10-01'
-                         , NULL
+                         , DEFAULT
 						 , 'Parque Ibirapuera'
 						 , 'Proibido realizar festas, horário de silêcio a partir das 22h, visitas somente até às 23h'
 				         , FN_Anunciante_id('julianev', NULL, NULL)
@@ -194,7 +216,7 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
 						 , 3800.00
 						 , DEFAULT
 						 , '2024-09-20'
-						 , NULL
+						 , DEFAULT
 					     , 'Maracanã'
 						 , 'Manter as áreas comuns limpas, não tocar instrumentos musicais após às 21h'
 						 , FN_Anunciante_id('robcarvalho', NULL, NULL)
@@ -211,15 +233,14 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
 						 , 1
 						 , 2
 						 , 1200.00
-						 , 'A'
+						 , DEFAULT
 						 , '2025-09-25'
-                         , NULL
+                         , DEFAULT
 						 , 'Praça da Liberdade'
 						 , 'Limpeza das áreas comuns será feita de forma alternada (semanalmente), proibido o uso de aparelhos de som acima de 50 decibéis'
 						 , FN_Anunciante_id('tavaragusto', NULL, NULL)
 						 , NULL
 						 );
-
 
 INSERT INTO Universitario ( cDne
 						  , cNome
@@ -291,10 +312,11 @@ INSERT INTO Chat ( uId_remetente
           VALUES ( FN_Anunciante_id('robcarvalho', NULL, NULL)
                  , 'Bom dia!'
                  , '14:20:00'
-                 , '2024 - 09 - 12'
-                 , 'ENVIADA/NÃO LIDA'
+                 , '2024-09-12'
+                 , '0'
                  , FN_Universitario_id('laura.pereira', NULL, NULL)
                  , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
+                 , FN_Forum_id('Moradia do Sol', (FN_Anunciante_id('robcarvalho', NULL, NULL)))
                  );
 
 -- INSERT INTO Telefone_Anunciante ( cTel
@@ -356,8 +378,6 @@ INSERT INTO Chat ( uId_remetente
 --                          , ( 5
 --                            , 3);
 
-
-
 INSERT INTO Filtro ( cNome
                    , cCategoria
                    )
@@ -387,10 +407,7 @@ INSERT INTO Filtro ( cNome
                    )
                  , ( 'Não tenho, mas amo'
                    , 'animal'
-                   );
-
-
-
+                   ); --Categoria: Animal
 INSERT INTO Filtro ( cNome
                    , cCategoria
                    ) 
@@ -405,8 +422,7 @@ INSERT INTO Filtro ( cNome
                    )
                  , ( 'Outros gêneros'
                    , 'genero'
-                   );
-
+                   ); --Categoria: Genero
 INSERT INTO Filtro ( cNome
                    , cCategoria
                    )
@@ -421,8 +437,7 @@ INSERT INTO Filtro ( cNome
                    )
                  , ( '4 ou mais'
                    , 'pessoa'
-                   );
-
+                   ); --Categoria: Pessoa
 INSERT INTO Filtro ( cNome
                    , cCategoria
                    )
@@ -437,8 +452,7 @@ INSERT INTO Filtro ( cNome
                    )
                  , ('Tentando parar'
                    , 'fumo'
-                   );
-
+                   ); --Categoria: Fumo
 INSERT INTO Filtro ( cNome
                    , cCategoria
                    )
@@ -459,4 +473,4 @@ INSERT INTO Filtro ( cNome
                    )
                  , ( 'Socialmente, aos fins de semana'
                    , 'bebida'
-                   );
+                   ); --Categoria: Bebida
