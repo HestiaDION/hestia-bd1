@@ -111,13 +111,13 @@ $$ LANGUAGE plpgsql;
 --Boost
 CREATE OR REPLACE FUNCTION FN_Boost_ID
 (
-    AcTipoBoost VARCHAR(50)
+    AcNmBoost VARCHAR(50)
 )
     RETURNS UUID AS $$
 BEGIN
     RETURN ( SELECT Boost.uId
                FROM Boost
-              WHERE UPPER(Boost.cTipoBoost) = UPPER(AcTipoBoost)
+              WHERE UPPER(Boost.cNmBoost) = UPPER(AcNmBoost)
            );
 END;
 $$ LANGUAGE plpgsql;
@@ -141,7 +141,6 @@ CREATE OR REPLACE FUNCTION FN_Anunciante_ID
 (
     AcUsername VARCHAR(50)
 ,   AcEmail    VARCHAR(266)
-,   AcCPF      VARCHAR(14)
 )
     RETURNS UUID AS $$
 BEGIN
@@ -149,7 +148,6 @@ BEGIN
                FROM Anunciante
               WHERE Anunciante.cUsername = AcUsername
                  OR UPPER(Anunciante.cEmail) = UPPER(AcEmail)
-                 OR Anunciante.cCPF = AcCPF
            );
 END;
 $$ LANGUAGE plpgsql;
@@ -171,6 +169,32 @@ BEGIN
            );
 END;
 $$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION FN_Pagamento_SetDtFim_FromAtivo()
+    RETURNS TRIGGER
+AS $$
+BEGIN
+    IF NEW.cAtivo == '1' THEN
+        NEW.dDtFim := CURRENT_DATE + INTERVAL '1 MONTH';
+    ELSE IF NEW.cAtivo == '-1' THEN
+        NEW.dDtFim := CURRENT_DATE;
+    ELSE
+        NEW.sDtFim := NULL;
+    END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$  LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION FN_Pagamento_NotNullDtFim()
+    RETURNS TRIGGER
+AS $$
+BEGIN
+    IF NEW.cAtivo != '0' AND NEW.dDtFim IS NULL THEN
+        RAISE EXCEPTION 'NULL value in column "dDtFim" of relation "Pagamento" violates not-null constraint when column "cAtivo" is different from "0"';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 --Plano Vantagem
 CREATE OR REPLACE FUNCTION FN_Plano_vantagem_ID
@@ -188,32 +212,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
---Telefones
-CREATE OR REPLACE FUNCTION FN_Telefone_ID
-(
-    AcTel VARCHAR(20)
-)
-    RETURNS UUID AS $$
-DECLARE
-    VuID UUID;
-BEGIN
-    IF EXISTS( SELECT VuID = Telefone_Anunciante.uId
-                 FROM Telefone_Anunciante
-                WHERE Telefone_Anunciante.cTel = AcTel
-    )
-    THEN
-        RETURN VuID;
-    ELSE IF EXISTS( SELECT VuID = Telefone_Universitario.uId
-                      FROM Telefone_Universitario
-                     WHERE Telefone_Universitario.cTel = AcTel
-    )
-    THEN
-        RETURN VuID;
-    END IF;
-    END IF;
-END;
-$$ LANGUAGE plpgsql;
-
 --Foto
 CREATE OR REPLACE FUNCTION FN_Foto_ID
 (
@@ -227,6 +225,7 @@ BEGIN
            );
 END;
 $$ LANGUAGE plpgsql;
+
 
 --Forum
 CREATE OR REPLACE FUNCTION FN_Forum_ID
@@ -268,3 +267,13 @@ CREATE OR REPLACE TRIGGER TG_AnuncioCasa_SetDTExpiracao
     BEFORE INSERT ON AnuncioCasa
     FOR EACH ROW
 EXECUTE FUNCTION FN_AnuncioCasa_SetDefault_DtExpiracao();
+
+--Pagamento
+CREATE OR REPLACE TRIGGER TG_Pagamento_UpdateDtFim
+    AFTER UPDATE ON Pagamento
+    FOR EACH ROW
+EXECUTE FUNCTION FN_Pagamento_SetDtFim_FromAtivo();
+CREATE OR REPLACE TRIGGER TG_Pagamento_InsertNotNull_DtFIm
+    BEFORE INSERT ON Pagamento
+    FOR EACH ROW
+EXECUTE FUNCTION FN_Pagamento_NotNullDtFim()

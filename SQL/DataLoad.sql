@@ -1,24 +1,22 @@
 -- Script para a geração do DataLoad
 
 -- DELETES
-DELETE FROM Admin                  ;
-DELETE FROM Anuncio_Filtro         ;
-DELETE FROM Chat                   ;
-DELETE FROM Universitario_Filtro   ;
-DELETE FROM Telefone_Universitario ;
-DELETE FROM Foto_Anuncio           ;
-DELETE FROM Telefone_Anunciante    ;
-DELETE FROM Forum                  ;
-DELETE FROM Plano_vantagem         ;
-DELETE FROM Anuncio_Faculdade      ;
-DELETE FROM Universitario          ;
-DELETE FROM Faculdade              ;
-DELETE FROM Filtro                 ;
-DELETE FROM AnuncioCasa            ;
-DELETE FROM Anunciante             ;
-DELETE FROM Plano                  ;
-DELETE FROM Boost                  ;
-DELETE FROM Pagamento              ;
+DELETE FROM Admin;
+DELETE FROM Anuncio_Filtro;
+DELETE FROM Chat;
+DELETE FROM Universitario_Filtro;
+DELETE FROM Foto_Anuncio;
+DELETE FROM Forum;
+DELETE FROM Plano_vantagem;
+DELETE FROM Anuncio_Faculdade;
+DELETE FROM Universitario;
+DELETE FROM Faculdade;
+DELETE FROM Filtro;
+DELETE FROM AnuncioCasa;
+DELETE FROM Anunciante;
+DELETE FROM Plano;
+DELETE FROM Boost;
+DELETE FROM Pagamento;
 
 --INSERTS
 INSERT INTO Admin ( cNome
@@ -319,26 +317,6 @@ INSERT INTO Chat ( uId_remetente
                  , FN_Forum_id('Moradia do Sol', (FN_Anunciante_id('robcarvalho', NULL, NULL)))
                  );
 
--- INSERT INTO Telefone_Anunciante ( cTel
---                                 , uId_anunciante
---                                 )
---                          VALUES ( '11912345678'
---                                 , 1)
---                               , ( '21987654321'
---                                 , 2)
---                               , ( '31246801357'
---                                 , 3);
---
--- INSERT INTO Telefone_Universitario ( cTel
---                                    , uId_Universitario
---                                    )
---                             VALUES ( '119123456333'
---                                    , 1)
---                                  , ( '21987654699'
---                                    , 2)
---                                  , ( '31246801377'
---                                    , 3);
---
 -- INSERT INTO Foto_Anuncio ( cUrl
 --                          , uId_anuncio
 --                          )
