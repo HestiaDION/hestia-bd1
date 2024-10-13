@@ -35,6 +35,7 @@ CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_
                            , cUsername     VARCHAR(50)  NOT NULL
                            , cEmail        VARCHAR(266) NOT NULL
                            , cSenha        VARCHAR(100) NOT NULL
+                           , dDtNascimento DATE         NOT NULL
                            , cGenero       VARCHAR(50)  NOT NULL
                            , cMunicipio    VARCHAR(100) NOT NULL
                            , cPrefixo      VARCHAR(5)   NOT NULL    DEFAULT '+55'
@@ -44,11 +45,11 @@ CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_
                            , cDescricao    TEXT             NULL
                            , uId_Anuncio   UUID             NULL
                            , uId_Faculdade UUID             NULL
-                           , CHECK ( cPlano ~ '(0|1)'                                            AND
+                           , CHECK ( cPlano ~ '^(0|1)$' AND
+                                     cPrefixo ~ '^\+[0-9]+$' AND
                                      cEmail ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' AND
-                                     cPrefixo ~ '^+[0-9].*$'                                     AND
-                                     cTel ~ '^(?[0-9]{2}[) ]? ?[0-9]{5}[- ]?[0-9]{4}$'
-                                   )
+                                     cTel ~ '^\(?[0-9]{2}\)? ?[0-9]{5}[- ]?[0-9]{4}$'
+                                 )
                            , UNIQUE (cTel)
                            , UNIQUE (cUsername)
                            , UNIQUE (cEmail)
@@ -119,19 +120,19 @@ CREATE TABLE Anunciante ( uId                  UUID         PRIMARY KEY DEFAULT 
                         , cUsername            VARCHAR(100) NOT NULL
                         , cEmail               VARCHAR(266) NOT NULL
                         , cSenha               VARCHAR(100) NOT NULL
-                        , dDtNascdimento       DATE         NOT NULL
+                        , dDtNascimento        DATE         NOT NULL
                         , cGenero              VARCHAR(50)  NOT NULL
                         , cMunicipio           VARCHAR(100) NOT NULL
                         , cPrefixo             VARCHAR(5)   NOT NULL    DEFAULT '+55'
                         , cTel                 VARCHAR(20)  NOT NULL
                         , cPlano               CHAR(1)      NOT NULL    DEFAULT '0'
                         , cDescricao           TEXT             NULL
-                        , cFoto_AnuncioPerfil  TEXT             NULL
-                        , CHECK ( cPlano ~ '^(0|1)$'                                          AND
-                                  cPrefixo ~ '^+[0-9].*$'                                     AND
+                        , cFotoPerfil          TEXT             NULL
+                        , CHECK ( cPlano ~ '^(0|1)$' AND
+                                  cPrefixo ~ '^\+[0-9]+$' AND
                                   cEmail ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' AND
-                                  cTel ~ '^(?[0-9]{2}[) ]? ?[0-9]{5}[- ]?[[0-9]{4}$'
-                                )
+                                  cTel ~ '^\(?[0-9]{2}\)? ?[0-9]{5}[- ]?[0-9]{4}$'
+                              )
                         , UNIQUE (cEmail)
                         , UNIQUE (cUsername)
                         , UNIQUE (cTel)

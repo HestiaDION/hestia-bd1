@@ -36,12 +36,12 @@ INSERT INTO Faculdade ( cUf
 					  , iNumFaculdade
 					  , cNome
 					  )
-			  VALUES  ( 'SP'
-					  , '01303-060'
-					  , 'São Paulo'
-					  , 'Rua da Consolação'
+			  VALUES  ( 'RJ'
+					  , '22251-040'
+					  , 'Niterói'
+					  , 'Rua Marquês de Olinda'
 					  , 'Consolação'
-					  , 1234
+					  , 70
 					  , 'Universidade Presbiteriana Mackenzie'
 					  )
 					, ( 'SP'
@@ -117,47 +117,59 @@ INSERT INTO Faculdade ( cUf
                       , 'Centro Universitário São Camilo'
                       );
 
-INSERT INTO Anunciante ( cCpf
-					   , cNome
+INSERT INTO Anunciante ( cNome
 					   , cUsername
 					   , cEmail
 					   , cSenha
+                       , dDtNascimento
                        , cGenero
+                       , cMunicipio
+                       , cPrefixo
+                       , cTel
 					   , cPlano
 					   , cDescricao
-					   , cFoto_AnuncioPerfil
+					   , cFotoPerfil
 					   )
-				VALUES ( '12345678910'
-					   , 'Julia Neves'
+				VALUES ( 'Julia Neves'
 					   , 'julianev'
-					   , 'julianevs@gmail.com'
+					   , 'julianevs@imob.org.br'
 					   , '402933?a'
+                       , '1981-04-21'
                        , 'Mulher'
-					   , '1'
+                       , 'São Paulo'
+                       , DEFAULT
+                       , '11957843248'
+                       , '1'
 					   , 'Sou uma empresária organizada e trabalhadora que gostaria de alugar o apartamento onde morei durante minha formação na Universidade
 Presbiteriana Mackenzie. Desejo que o local seja utilizado para fins estudantis e, para evitar conflitos ou multas, prefiro estabelecer algumas regras.'
 					   , 'https://example.com/perfil_julia.jpg'
 					   )
-					 , ( '09876543210'
-					   , 'Roberto Carvalho'
+					 , ( 'Roberto Carvalho'
 					   , 'robcarvalho'
 					   , 'carvalhorobert0@gmail.com'
 					   , '2245def'
+                       , '1998-07-14'
                        , 'Prefiro não informar'
+                       , 'Niterói'
+                       , DEFAULT
+                       , '(21) 92114-5200'
 					   , DEFAULT
 					   , 'Sou uma engenheira dedicada e detalhista, atualmente morando no Rio de Janeiro, e estou oferecendo para aluguel o apartamento
 onde vivi durante minha graduação na PUC. Gostaria que o imóvel fosse alugado para
 estudantes, e para garantir uma boa convivência e evitar problemas, defini algumas regras básicas.'
 					   , 'https://example.com/perfil_roberto.jpg'
 					   )
-					 , ( '24680135793'
-					   , 'Augusto Tavares'
+					 , ( 'Augusto Tavares'
 					   , 'tavaragusto'
-					   , 'tavares.ag@gmail.com'
+					   , 'tavares.ag@hotmail.com'
 					   , '35791qa'
+                       , '2001-09-11'
                        , 'Homem'
+                       , 'Carapicuiba'
+                       , DEFAULT
+                       , '1199359 4857'
 					   , DEFAULT
-					   , 'sou um advogado disciplinado e focado, agora estabelecido em Belo Horizonte, e estou disponibilizando o apartamento
+					   , 'Sou um advogado disciplinado e focado, agora estabelecido em Belo Horizonte, e estou disponibilizando o apartamento
 que usei durante minha formação na Universidade de São Paulo (USP). Prefiro que o espaço seja ocupado por estudantes e,
 para manter a ordem e evitar qualquer inconveniente, estabeleci algumas regras claras.'
 					   , 'https://example.com/perfil_atavares.jpg'
@@ -198,7 +210,7 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
                          , DEFAULT
 						 , 'Parque Ibirapuera'
 						 , 'Proibido realizar festas, horário de silêcio a partir das 22h, visitas somente até às 23h'
-				         , FN_Anunciante_id('julianev', NULL, NULL)
+				         , FN_Anunciante_id('julianev', NULL)
 						 , NULL
 						 )
 					   , ( 'Moradia do Sol'
@@ -207,7 +219,7 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
 						 , 120
 						 , 'Avenida Brasil'
 						 , 'Centro'
-						 , 'Rio de Janeiro'
+						 , 'Noterói'
 						 , 'RJ'
 						 , 4
 						 , 6
@@ -217,7 +229,7 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
 						 , DEFAULT
 					     , 'Maracanã'
 						 , 'Manter as áreas comuns limpas, não tocar instrumentos musicais após às 21h'
-						 , FN_Anunciante_id('robcarvalho', NULL, NULL)
+						 , FN_Anunciante_id('robcarvalho', NULL)
 						 , NULL
 						 )
 					   , ( DEFAULT
@@ -236,7 +248,7 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
                          , DEFAULT
 						 , 'Praça da Liberdade'
 						 , 'Limpeza das áreas comuns será feita de forma alternada (semanalmente), proibido o uso de aparelhos de som acima de 50 decibéis'
-						 , FN_Anunciante_id('tavaragusto', NULL, NULL)
+						 , FN_Anunciante_id('tavaragusto', NULL)
 						 , NULL
 						 );
 
@@ -245,9 +257,13 @@ INSERT INTO Universitario ( cDne
 						  , cUsername
 						  , cEmail
 						  , cSenha
-						  , cGenero
+                          , dDtNascimento
+                          , cGenero
+                          , cMunicipio
+                          , cPrefixo
+                          , cTel
 						  , cPlano
-						  , cFoto_AnuncioPerfil
+						  , cFotoPerfil
 						  , cDescricao
 						  , uId_anuncio
 						  , uId_faculdade
@@ -257,7 +273,11 @@ INSERT INTO Universitario ( cDne
 						  , 'laura.pereira'
 						  , 'laura.pereira@gmail.com'
 						  , 'L@ura2024!'
+                          , '2005-04-12'
 						  , 'Feminino'
+                          , 'Niterói'
+                          , DEFAULT
+                          , '21 97645 2332'
 						  , '1'
 						  , 'https://example.com/perfil_laura.jpg'
 					      , 'Estudante de arquitetura apaixonada por design sustentável e arquitetura minimalista. Gosto de viajar e explorar novos lugares.'
@@ -269,7 +289,11 @@ INSERT INTO Universitario ( cDne
                           , 'thiago.almeida'
                           , 'thiago.almeida@rjmail.com'
                           , 'Th!agoRJ2024'
+                          , '2004-06-05'
                           , 'Masculino'
+                          , 'São Paulo'
+                          , DEFAULT
+                          , '11 99545 4752'
                           , '1'
                           , 'https://example.com/perfil_thiago.jpg'
                           , 'Carioca, estudante de engenharia civil na PUC. Amo praticar esportes, especialmente surf e futebol. Gosto de aproveitar o que o Rio tem de melhor.'
@@ -281,7 +305,11 @@ INSERT INTO Universitario ( cDne
                           , 'souzamari'
                           , 'mariana.souza@mgmail.com'
                           , 'Mar!anaMG2024'
+                          , '2006-11-07'
                           , 'Feminino'
+                          , 'São Paulo'
+                          , DEFAULT
+                          , '11 92457 9374'
                           , DEFAULT
                           , 'https://example.com/perfil_mariana.jpg'
                           , 'Mineira de coração, estudo medicina veterinária na UFMG. Amo animais e a natureza. Nas horas vagas, gosto de fazer trilhas e descobrir novos lugares.'
@@ -307,14 +335,14 @@ INSERT INTO Chat ( uId_remetente
                  , uId_Anuncio
                  , uId_Forum
                  )
-          VALUES ( FN_Anunciante_id('robcarvalho', NULL, NULL)
+          VALUES ( FN_Anunciante_id('robcarvalho', NULL)
                  , 'Bom dia!'
                  , '14:20:00'
                  , '2024-09-12'
                  , '0'
                  , FN_Universitario_id('laura.pereira', NULL, NULL)
                  , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
-                 , FN_Forum_id('Moradia do Sol', (FN_Anunciante_id('robcarvalho', NULL, NULL)))
+                 , FN_Forum_id('Moradia do Sol', (FN_Anunciante_id('robcarvalho', NULL)))
                  );
 
 -- INSERT INTO Foto_Anuncio ( cUrl
