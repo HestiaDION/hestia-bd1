@@ -184,7 +184,7 @@ INSERT INTO AnuncioCasa  ( cNmMoradia
 						 , cCidade
 						 , cUf
 						 , iQntQuartos
-						 , iQntPessoas_max
+						 , iQntPessoasMax
 						 , nValor
 						 , cStatus
 						 , dDtInicio
@@ -326,9 +326,8 @@ INSERT INTO Forum ( cNome
                   , 'Grupo informativo - Moradia do Sol'
                   );
 
-INSERT INTO Chat ( uId_remetente
+INSERT INTO Chat ( uIdRemetente
                  , cMensagem
-                 , dHorarioEnvio
                  , dDtMensagem
                  , cStatus
                  , uId_Universitario
@@ -337,52 +336,61 @@ INSERT INTO Chat ( uId_remetente
                  )
           VALUES ( FN_Anunciante_id('robcarvalho', NULL)
                  , 'Bom dia!'
-                 , '14:20:00'
-                 , '2024-09-12'
+                 , '2024-09-12 14:20:00'
                  , '0'
                  , FN_Universitario_id('laura.pereira', NULL, NULL)
                  , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
                  , FN_Forum_id('Moradia do Sol', (FN_Anunciante_id('robcarvalho', NULL)))
                  );
 
--- INSERT INTO Foto_Anuncio ( cUrl
---                          , uId_anuncio
---                          )
---                   VALUES ( 'https://example.com/apartamento.jpg'
---                          , 1
---                          )
---                        , ( 'https://example.com/casa.jpg'
---                          , 2
---                          )
---                        , ( 'https://example.com/kitnet.jpg'
---                          , 3
---                          );
---
+INSERT INTO Foto_Anuncio ( cUrl
+                         , uId_anuncio
+                         )
+                  VALUES ( 'https://example.com/apartamento.jpg'
+                         , FN_AnuncioCasa_id('7a2d4106-4', 'julianev', NULL)
+                         )
+                       , ( 'https://example.com/casa.jpg'
+                         , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
+                         )
+                       , ( 'https://example.com/kitnet.jpg'
+                         , FN_AnuncioCasa_id('c5fdfa1c-4', 'tavaragusto', NULL)
+                         );
+
 -- INSERT INTO Universitario_Filtro ( uId_Filtro
 --                                  , uId_universitario)
 --                           VALUES ( 1
---                                  , 1)
+--                                  , FN_Universitario_id('laura.pereira', NULL, NULL)
+--                                  )
 --                                , ( 3
---                                  , 1)
+--                                  , FN_Universitario_id('laura.pereira', NULL, NULL)
+--                                  )
 --                                , ( 1
---                                  , 2)
+--                                  , FN_Universitario_id('thiago.almeida', NULL, NULL)
+--                                  )
 --                                , ( 2
---                                  , 2)
+--                                  , FN_Universitario_id('thiago.almeida', NULL, NULL)
+--                                  )
 --                                , ( 3
---                                  , 3);
+--                                  , FN_Universitario_id('souzamari', NULL, NULL)
+--                                  );
 --
 -- INSERT INTO anuncio_filtro ( uId_Filtro
 --                            , uId_anuncio)
 --                     VALUES ( 1
---                            , 1)
+--                            , FN_Anunciante_id('julianev', NULL)
+--                            )
 --                          , ( 4
---                            , 1)
+--                            , FN_Anunciante_id('julianev', NULL)
+--                            )
 --                          , ( 1
---                            , 2)
+--                            , FN_Anunciante_id('robcarvalho', NULL, NULL)
+--                            )
 --                          , ( 2
---                            , 2)
+--                            , FN_Anunciante_id('robcarvalho', NULL, NULL)
+--                            )
 --                          , ( 5
---                            , 3);
+--                            , FN_Anunciante_id('tavaragusto', NULL, NULL)
+--                            );
 
 INSERT INTO Filtro ( cNome
                    , cCategoria

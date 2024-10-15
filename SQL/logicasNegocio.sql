@@ -97,13 +97,15 @@ $$ LANGUAGE plpgsql;
 --Filtro
 CREATE OR REPLACE FUNCTION FN_Filtro_ID
 (
-    AcNome VARCHAR(100)
+    AcNome      VARCHAR(100)
+,   AcCategoria VARCHAR(100)
 )
     RETURNS UUID AS $$
 BEGIN
     RETURN ( SELECT Filtro.uId
                FROM Filtro
               WHERE UPPER(Filtro.cNome) = UPPER(AcNome)
+                AND UPPER(Filtro.cCategoria) = UPPER(AcCategoria)
            );
 END;
 $$ LANGUAGE plpgsql;
@@ -178,7 +180,7 @@ BEGIN
     ELSE IF NEW.cAtivo == '-1' THEN
         NEW.dDtFim := CURRENT_DATE;
     ELSE
-        NEW.sDtFim := NULL;
+        NEW.dDtFim := NULL;
     END IF;
     END IF;
 
@@ -225,7 +227,6 @@ BEGIN
            );
 END;
 $$ LANGUAGE plpgsql;
-
 
 --Forum
 CREATE OR REPLACE FUNCTION FN_Forum_ID

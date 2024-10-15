@@ -45,8 +45,8 @@ CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_
                            , cDescricao    TEXT             NULL
                            , uId_Anuncio   UUID             NULL
                            , uId_Faculdade UUID             NULL
-                           , CHECK ( cPlano ~ '^(0|1)$' AND
-                                     cPrefixo ~ '^\+[0-9]+$' AND
+                           , CHECK ( cPlano ~ '^(0|1)$'                                          AND
+                                     cPrefixo ~ '^\+[0-9]+$'                                     AND
                                      cEmail ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' AND
                                      cTel ~ '^\(?[0-9]{2}\)? ?[0-9]{5}[- ]?[0-9]{4}$'
                                  )
@@ -56,7 +56,7 @@ CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_
                            , UNIQUE (cDne)
                            );
 
-CREATE TABLE AnuncioCasa ( uId             UUID           PRIMARY KEY DEFAULT gen_random_uuid()
+CREATE TABLE AnuncioCasa (  uId             UUID           PRIMARY KEY DEFAULT gen_random_uuid()
                           , cNmMoradia      VARCHAR(50)    NOT NULL    DEFAULT substring(gen_random_uuid()::text, 1, 10)
                           , cCEP            VARCHAR(9)     NOT NULL
                           , cTipoMoradia    VARCHAR(50)    NOT NULL
@@ -65,8 +65,8 @@ CREATE TABLE AnuncioCasa ( uId             UUID           PRIMARY KEY DEFAULT ge
                           , cBairro         VARCHAR(100)   NOT NULL
                           , cCidade         VARCHAR(100)   NOT NULL
                           , cUF             VARCHAR(2)     NOT NULL
-                          , iQntQuartos    INT            NOT NULL
-                          , iQntPessoas_max INT            NOT NULL
+                          , iQntQuartos     INT            NOT NULL
+                          , iQntPessoasMax INT            NOT NULL
                           , nValor          DECIMAL(10, 2) NOT NULL
                           , cStatus         CHAR(1)        NOT NULL    DEFAULT '1'
                           , dDtInicio       DATE           NOT NULL    DEFAULT CURRENT_DATE
@@ -76,7 +76,7 @@ CREATE TABLE AnuncioCasa ( uId             UUID           PRIMARY KEY DEFAULT ge
                           , uId_Anunciante  UUID           NOT NULL
                           , uId_Boost       UUID               NULL
                           , CHECK ( nValor > 0                                      AND
-                                    iQntPessoas_max > 0                             AND
+                                    iQntPessoasMax > 0                             AND
                                     iNumMoradia > 0                                 AND
                                     (dDtExpiracao - INTERVAL '6 MONTH') = dDtInicio AND
                                     cStatus ~ '^(0|1)$'                             AND
@@ -128,8 +128,8 @@ CREATE TABLE Anunciante ( uId                  UUID         PRIMARY KEY DEFAULT 
                         , cPlano               CHAR(1)      NOT NULL    DEFAULT '0'
                         , cDescricao           TEXT             NULL
                         , cFotoPerfil          TEXT             NULL
-                        , CHECK ( cPlano ~ '^(0|1)$' AND
-                                  cPrefixo ~ '^\+[0-9]+$' AND
+                        , CHECK ( cPlano ~ '^(0|1)$'                                          AND
+                                  cPrefixo ~ '^\+[0-9]+$'                                     AND
                                   cEmail ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' AND
                                   cTel ~ '^\(?[0-9]{2}\)? ?[0-9]{5}[- ]?[0-9]{4}$'
                               )
@@ -173,10 +173,9 @@ CREATE TABLE Plano_vantagem ( uId       UUID         PRIMARY KEY DEFAULT gen_ran
 
 CREATE TABLE Chat ( uId               UUID        PRIMARY KEY DEFAULT gen_random_uuid()
                   , cMensagem         TEXT        NOT NULL
-                  , dHorarioEnvio     TIME        NOT NULL    DEFAULT (CURRENT_TIME AT TIME ZONE 'America/Sao_Paulo')
-                  , dDtMensagem       DATE        NOT NULL    DEFAULT CURRENT_DATE
+                  , dDtMensagem       DATE        NOT NULL    DEFAULT (NOW() AT TIME ZONE 'America/Sao_Paulo')
                   , cStatus           VARCHAR(2)  NOT NULL    DEFAULT '-1'
-                  , uId_remetente     UUID        NOT NULL
+                  , uIdRemetente      UUID        NOT NULL
                   , uId_Universitario UUID            NULL
                   , uId_Anuncio       UUID            NULL
                   , uId_Forum         UUID            NULL
@@ -184,7 +183,6 @@ CREATE TABLE Chat ( uId               UUID        PRIMARY KEY DEFAULT gen_random
                             NOT (uId_Universitario IS NULL AND uId_Anuncio IS NULL)
                           )
                   );
-
 
 CREATE TABLE Foto_Anuncio ( uId         UUID PRIMARY KEY DEFAULT gen_random_uuid()
                           , cUrl        TEXT     NULL
