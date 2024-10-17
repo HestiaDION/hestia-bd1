@@ -37,7 +37,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- AnuncioCasa
---Anuncio Casa
 CREATE OR REPLACE FUNCTION FN_AnuncioCasa_ID
 (
     AcNmMoradia VARCHAR(50)
@@ -77,20 +76,6 @@ BEGIN
         NEW.dDtexpiracao := NEW.dDtinicio + INTERVAL '6 months';
     END IF;
     RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
---Faculdade
-CREATE OR REPLACE FUNCTION FN_Faculdade_ID
-(
-    AcNome VARCHAR(100)
-)
-    RETURNS UUID AS $$
-BEGIN
-    RETURN ( SELECT Faculdade.uId
-               FROM Faculdade
-              WHERE UPPER(Faculdade.cNome) = UPPER(AcNome)
-           );
 END;
 $$ LANGUAGE plpgsql;
 

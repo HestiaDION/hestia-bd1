@@ -10,8 +10,6 @@ DROP TABLE IF EXISTS Universitario_Filtro   CASCADE;
 DROP TABLE IF EXISTS Foto_Anuncio           CASCADE;
 DROP TABLE IF EXISTS Forum                  CASCADE;
 DROP TABLE IF EXISTS Plano_vantagem         CASCADE;
-DROP TABLE IF EXISTS Anuncio_Faculdade      CASCADE;
-DROP TABLE IF EXISTS Faculdade              CASCADE;
 DROP TABLE IF EXISTS Filtro                 CASCADE;
 DROP TABLE IF EXISTS Anunciante             CASCADE;
 DROP TABLE IF EXISTS Plano                  CASCADE;
@@ -44,7 +42,7 @@ CREATE TABLE Universitario ( uId           UUID         PRIMARY KEY DEFAULT gen_
                            , cFotoPerfil   TEXT             NULL
                            , cDescricao    TEXT             NULL
                            , uId_Anuncio   UUID             NULL
-                           , uId_Faculdade UUID             NULL
+                           , cNmFaculdade  VARCHAR(100)     NULL
                            , CHECK ( cPlano ~ '^(0|1)$'                                          AND
                                      cPrefixo ~ '^\+[0-9]+$'                                     AND
                                      cEmail ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' AND
@@ -83,20 +81,6 @@ CREATE TABLE AnuncioCasa (  uId             UUID           PRIMARY KEY DEFAULT g
                                     iQntQuartos > 0
                                   )
                           );
-
-CREATE TABLE Faculdade ( uId           UUID         PRIMARY KEY DEFAULT gen_random_uuid()
-                       , cNome         VARCHAR(100)     NULL
-                       , cCEP          VARCHAR(9)   NOT NULL
-                       , iNumFaculdade INT              NULL
-                       , cRua          VARCHAR(100) NOT NULL
-                       , cBairro       VARCHAR(100) NOT NULL
-                       , cCidade       VARCHAR(100) NOT NULL
-                       , cUF           VARCHAR(2)   NOT NULL
-                       , CHECK ( iNumFaculdade > 0                   AND
-                                 cCEP ~ '^[0-9]{5}-?[0-9]{3}$'
-                               )
-                       , UNIQUE(cNome)
-                       );
 
 CREATE TABLE Filtro  ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                      , cNome      VARCHAR(100) NOT NULL
@@ -199,11 +183,6 @@ CREATE TABLE Anuncio_Filtro ( uId         UUID PRIMARY KEY DEFAULT gen_random_uu
                             , uId_Anuncio UUID NOT NULL
                             );
 
-CREATE TABLE Anuncio_Faculdade ( uId           UUID PRIMARY KEY DEFAULT gen_random_uuid()
-                               , uId_Anuncio   UUID NOT NULL
-                               , uId_Faculdade UUID NOT NULL
-                               );
-
 CREATE TABLE Forum ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                    , cNome      VARCHAR(100) NOT NULL
                    , uIdAdm     UUID         NOT NULL
@@ -213,7 +192,6 @@ CREATE TABLE Forum ( uId        UUID         PRIMARY KEY DEFAULT gen_random_uuid
 
 
 ALTER TABLE Universitario          ADD FOREIGN KEY (uId_Anuncio)       REFERENCES AnuncioCasa   (uId);
-ALTER TABLE Universitario          ADD FOREIGN KEY (uId_Faculdade)     REFERENCES Faculdade     (uId);
 ALTER TABLE AnuncioCasa            ADD FOREIGN KEY (uId_Anunciante)    REFERENCES Anunciante    (uId);
 ALTER TABLE AnuncioCasa            ADD FOREIGN KEY (uId_Boost)         REFERENCES Boost         (uId);
 ALTER TABLE Pagamento              ADD FOREIGN KEY (uId_Anunciante)    REFERENCES Anunciante    (uId);
@@ -228,5 +206,3 @@ ALTER TABLE Universitario_Filtro   ADD FOREIGN KEY (uId_Filtro)        REFERENCE
 ALTER TABLE Universitario_Filtro   ADD FOREIGN KEY (uId_Universitario) REFERENCES Universitario (uId);
 ALTER TABLE Anuncio_Filtro         ADD FOREIGN KEY (uId_Filtro)        REFERENCES Filtro        (uId);
 ALTER TABLE Anuncio_Filtro         ADD FOREIGN KEY (uId_Anuncio)       REFERENCES AnuncioCasa   (uId);
-ALTER TABLE Anuncio_Faculdade      ADD FOREIGN KEY (uId_Faculdade)     REFERENCES Faculdade     (uId);
-ALTER TABLE Anuncio_Faculdade      ADD FOREIGN KEY (uId_Anuncio)       REFERENCES AnuncioCasa   (uId);

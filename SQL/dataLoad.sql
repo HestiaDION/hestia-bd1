@@ -8,7 +8,6 @@ DELETE FROM Universitario_Filtro;
 DELETE FROM Foto_Anuncio;
 DELETE FROM Forum;
 DELETE FROM Plano_vantagem;
-DELETE FROM Anuncio_Faculdade;
 DELETE FROM Universitario;
 DELETE FROM Faculdade;
 DELETE FROM Filtro;
@@ -27,95 +26,6 @@ INSERT INTO Admin ( cNome
 				  ,'natalia.santos@germinare.org.br'
 				  ,'1234abc?'
 				  );
-
-INSERT INTO Faculdade ( cUf
-					  , cCep
-					  , cCidade
-					  , cRua
-					  , cBairro
-					  , iNumFaculdade
-					  , cNome
-					  )
-			  VALUES  ( 'RJ'
-					  , '22251-040'
-					  , 'Niterói'
-					  , 'Rua Marquês de Olinda'
-					  , 'Consolação'
-					  , 70
-					  , 'Universidade Presbiteriana Mackenzie'
-					  )
-					, ( 'SP'
-					  , '01504-001'
-					  , 'São Paulo'
-					  , 'Rua Vergueiro'
-					  , 'Liberdade'
-					  , 4321
-					  , 'Universidade Paulista (UNIP)'
-					  )
-					, ( 'SP'
-					  , '04004-020'
-					  , 'São Paulo'
-					  , 'Avenida Paulista'
-					  , 'Bela Vista'
-					  , 5678
-					  , 'Fundação Getulio Vargas (FGV)'
-					  )
-					, ( 'SP'
-					  , '05508-900'
-					  , 'São Paulo'
-					  , 'Rua do Matão'
-					  , 'Butantã'
-					  , 1000
-					  , 'Universidade de São Paulo (USP)'
-					  )
-					, ( 'SP'
-					  , '05002-072'
-					  , 'São Paulo'
-					  , 'Rua Cardoso de Almeida'
-					  , 'Perdizes'
-					  , 785
-					  , 'Pontifícia Universidade Católica (PUC-SP)'
-					  )
-					, ( 'SP'
-					  , '03178-200'
-					  , 'São Paulo'
-					  , 'Rua do Oratório'
-					  , 'Vila Prudente'
-					  , 234
-					  , 'Universidade São Judas Tadeu'
-					  )
-					, ( 'SP'
-					  , '04503-060'
-					  , 'São Paulo'
-					  , 'Avenida Faria Lima'
-					  , 'Itaim Bibi'
-					  , 876
-					  , 'Insper - Instituto de Ensino e Pesquisa'
-					  )
-					, ( 'SP'
-					  , '03164-000'
-					  , 'São Paulo'
-					  , 'Rua Taquari'
-					  , 'Mooca'
-					  , 598
-					  , 'Universidade Cidade de São Paulo (UNICID)'
-					  )
-					, ( 'SP'
-					  , '01224-001'
-					  , 'São Paulo'
-					  , 'Rua Itambé'
-					  , 'Higienópolis'
-					  , 450
-					  , 'Faculdade de Direito da Fundação Armando Penteado (FAAP)'
-					  )
-					, ( 'SP'
-                      , '05565-080'
-                      , 'São Paulo'
-                      , 'Avenida Corifeu de Azevedo'
-                      , 'Vila Universitária'
-                      , 3145
-                      , 'Centro Universitário São Camilo'
-                      );
 
 INSERT INTO Anunciante ( cNome
 					   , cUsername
@@ -266,7 +176,7 @@ INSERT INTO Universitario ( cDne
 						  , cFotoPerfil
 						  , cDescricao
 						  , uId_anuncio
-						  , uId_faculdade
+						  , cNmFaculdade
 						  )
 				   VALUES ( '1023456789'
 						  , 'Laura Pereira'
@@ -282,7 +192,7 @@ INSERT INTO Universitario ( cDne
 						  , 'https://example.com/perfil_laura.jpg'
 					      , 'Estudante de arquitetura apaixonada por design sustentável e arquitetura minimalista. Gosto de viajar e explorar novos lugares.'
 					      , FN_AnuncioCasa_id('Moradia do Sol','robcarvalho', NULL)
-						  , FN_Faculdade_id('Universidade Presbiteriana Mackenzie')
+						  , 'Universidade Presbiteriana Mackenzie'
 						  )
 						, ( '2034567890'
                           , 'Thiago Almeida'
@@ -298,7 +208,7 @@ INSERT INTO Universitario ( cDne
                           , 'https://example.com/perfil_thiago.jpg'
                           , 'Carioca, estudante de engenharia civil na PUC. Amo praticar esportes, especialmente surf e futebol. Gosto de aproveitar o que o Rio tem de melhor.'
                           ,	NULL
-                          , FN_Faculdade_id('Pontifícia Universidade Católica (PUC-SP)')
+                          , 'Pontifícia Universidade Católica (PUC-SP)'
                           )
 					    , ( '3045678901'
                           , 'Mariana Souza'
@@ -314,7 +224,7 @@ INSERT INTO Universitario ( cDne
                           , 'https://example.com/perfil_mariana.jpg'
                           , 'Mineira de coração, estudo medicina veterinária na UFMG. Amo animais e a natureza. Nas horas vagas, gosto de fazer trilhas e descobrir novos lugares.'
                           , NULL
-                          , FN_Faculdade_id('Universidade de São Paulo (USP)')
+                          , 'Universidade de São Paulo (USP)'
                           );
 
 INSERT INTO Forum ( cNome
@@ -347,13 +257,13 @@ INSERT INTO Foto_Anuncio ( cUrl
                          , uId_anuncio
                          )
                   VALUES ( 'https://example.com/apartamento.jpg'
-                         , FN_AnuncioCasa_id('7a2d4106-4', 'julianev', NULL)
+                         , FN_AnuncioCasa_id('6181dc76-b', 'julianev', NULL)
                          )
                        , ( 'https://example.com/casa.jpg'
                          , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
                          )
                        , ( 'https://example.com/kitnet.jpg'
-                         , FN_AnuncioCasa_id('c5fdfa1c-4', 'tavaragusto', NULL)
+                         , FN_AnuncioCasa_id('8e497177-3', 'tavaragusto', NULL)
                          );
 
 -- INSERT INTO Universitario_Filtro ( uId_Filtro
@@ -374,7 +284,7 @@ INSERT INTO Foto_Anuncio ( cUrl
 --                                  , FN_Universitario_id('souzamari', NULL, NULL)
 --                                  );
 --
--- INSERT INTO anuncio_filtro ( uId_Filtro
+-- INSERT INTO Anuncio_Filtro ( uId_Filtro
 --                            , uId_anuncio)
 --                     VALUES ( 1
 --                            , FN_Anunciante_id('julianev', NULL)
