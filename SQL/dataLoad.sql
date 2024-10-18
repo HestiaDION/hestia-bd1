@@ -257,15 +257,16 @@ INSERT INTO Foto_Anuncio ( cUrl
                          , uId_anuncio
                          )
                   VALUES ( 'https://example.com/apartamento.jpg'
-                         , FN_AnuncioCasa_id('6181dc76-b', 'julianev', NULL)
+                         , FN_AnuncioCasa_id('374c6f61-8', 'julianev', NULL)
                          )
                        , ( 'https://example.com/casa.jpg'
                          , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
                          )
                        , ( 'https://example.com/kitnet.jpg'
-                         , FN_AnuncioCasa_id('8e497177-3', 'tavaragusto', NULL)
-                         );
-
+                         , FN_AnuncioCasa_id('6a8b3980-2', 'tavaragusto', NULL)
+                         )
+;
+--
 -- INSERT INTO Universitario_Filtro ( uId_Filtro
 --                                  , uId_universitario)
 --                           VALUES ( 1

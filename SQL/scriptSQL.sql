@@ -24,6 +24,7 @@ CREATE TABLE Admin ( uId    UUID         PRIMARY KEY DEFAULT gen_random_uuid()
                    , cNome  VARCHAR(100) NOT NULL
                    , cEmail VARCHAR(266) NOT NULL
                    , cSenha VARCHAR(100) NOT NULL
+                   , cFoto  TEXT             NULL
                    , UNIQUE(cEmail)
                    );
 
