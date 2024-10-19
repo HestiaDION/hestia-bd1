@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS AnuncioCasa            CASCADE;
 DROP TABLE IF EXISTS Boost                  CASCADE;
 DROP TABLE IF EXISTS Pagamento              CASCADE;
 
+
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 CREATE TABLE Admin ( uId    UUID         PRIMARY KEY DEFAULT gen_random_uuid()

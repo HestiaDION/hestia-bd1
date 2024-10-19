@@ -9,7 +9,6 @@ DELETE FROM Foto_Anuncio;
 DELETE FROM Forum;
 DELETE FROM Plano_vantagem;
 DELETE FROM Universitario;
-DELETE FROM Faculdade;
 DELETE FROM Filtro;
 DELETE FROM AnuncioCasa;
 DELETE FROM Anunciante;
@@ -235,7 +234,19 @@ INSERT INTO Forum ( cNome
                   , FN_AnuncioCasa_Id('Moradia do Sol', 'robcarvalho', NULL)
                   , 'Grupo informativo - Moradia do Sol'
                   );
-
+INSERT INTO Foto_Anuncio ( cUrl
+                         , uId_anuncio
+                         )
+                  VALUES ( 'https://example.com/apartamento.jpg'
+                         , FN_AnuncioCasa_id('b0efdc89-c', 'julianev', NULL)
+                         )
+                       , ( 'https://example.com/casa.jpg'
+                         , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
+                         )
+                       , ( 'https://example.com/kitnet.jpg'
+                         , FN_AnuncioCasa_id('2b867633-2', 'tavaragusto', NULL)
+                         )
+;
 INSERT INTO Chat ( uIdRemetente
                  , cMensagem
                  , dDtMensagem
@@ -253,55 +264,7 @@ INSERT INTO Chat ( uIdRemetente
                  , FN_Forum_id('Moradia do Sol', (FN_Anunciante_id('robcarvalho', NULL)))
                  );
 
-INSERT INTO Foto_Anuncio ( cUrl
-                         , uId_anuncio
-                         )
-                  VALUES ( 'https://example.com/apartamento.jpg'
-                         , FN_AnuncioCasa_id('374c6f61-8', 'julianev', NULL)
-                         )
-                       , ( 'https://example.com/casa.jpg'
-                         , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', NULL)
-                         )
-                       , ( 'https://example.com/kitnet.jpg'
-                         , FN_AnuncioCasa_id('6a8b3980-2', 'tavaragusto', NULL)
-                         )
-;
 --
--- INSERT INTO Universitario_Filtro ( uId_Filtro
---                                  , uId_universitario)
---                           VALUES ( 1
---                                  , FN_Universitario_id('laura.pereira', NULL, NULL)
---                                  )
---                                , ( 3
---                                  , FN_Universitario_id('laura.pereira', NULL, NULL)
---                                  )
---                                , ( 1
---                                  , FN_Universitario_id('thiago.almeida', NULL, NULL)
---                                  )
---                                , ( 2
---                                  , FN_Universitario_id('thiago.almeida', NULL, NULL)
---                                  )
---                                , ( 3
---                                  , FN_Universitario_id('souzamari', NULL, NULL)
---                                  );
---
--- INSERT INTO Anuncio_Filtro ( uId_Filtro
---                            , uId_anuncio)
---                     VALUES ( 1
---                            , FN_Anunciante_id('julianev', NULL)
---                            )
---                          , ( 4
---                            , FN_Anunciante_id('julianev', NULL)
---                            )
---                          , ( 1
---                            , FN_Anunciante_id('robcarvalho', NULL, NULL)
---                            )
---                          , ( 2
---                            , FN_Anunciante_id('robcarvalho', NULL, NULL)
---                            )
---                          , ( 5
---                            , FN_Anunciante_id('tavaragusto', NULL, NULL)
---                            );
 
 INSERT INTO Filtro ( cNome
                    , cCategoria
@@ -399,3 +362,40 @@ INSERT INTO Filtro ( cNome
                  , ( 'Socialmente, aos fins de semana'
                    , 'bebida'
                    ); --Categoria: Bebida
+
+INSERT INTO Universitario_Filtro ( uId_Filtro
+                                 , uId_universitario
+)
+VALUES ( FN_Filtro_id('mulheres', 'genero')
+       , FN_Universitario_id('laura.pereira', NULL, NULL)
+)
+     , ( FN_Filtro_id('cachorro', 'animal')
+       , FN_Universitario_id('laura.pereira', NULL, NULL)
+)
+     , ( FN_Filtro_id('Socialmente, aos fins de semana', 'bebida')
+       , FN_Universitario_id('thiago.almeida', NULL, NULL)
+)
+     , ( FN_Filtro_id('não me importo', 'genero')
+       , FN_Universitario_id('thiago.almeida', NULL, NULL)
+)
+     , ( FN_Filtro_id('não fumo', 'fumo')
+       , FN_Universitario_id('souzamari', NULL, NULL)
+);
+
+INSERT INTO Anuncio_Filtro ( uId_Filtro
+                           , uId_anuncio)
+VALUES ( FN_Filtro_id('mulheres', 'genero')
+       , FN_AnuncioCasa_id('b0efdc89-c', 'julianev', null)
+)
+     , ( FN_Filtro_id('cachorro', 'animal')
+       , FN_AnuncioCasa_id('b0efdc89-c', 'julianev', null)
+)
+     , ( FN_Filtro_id('Socialmente, aos fins de semana', 'bebida')
+       , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', null)
+)
+     , ( FN_Filtro_id('não me importo', 'genero')
+       , FN_AnuncioCasa_id('Moradia do Sol', 'robcarvalho', null)
+)
+     , ( FN_Filtro_id('não fumo', 'fumo')
+       , FN_AnuncioCasa_id('2b867633-2', 'tavaragusto', null)
+);

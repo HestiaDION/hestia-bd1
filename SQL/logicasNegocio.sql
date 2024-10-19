@@ -50,8 +50,8 @@ BEGIN
                     INNER JOIN Anunciante ON AnuncioCasa.uid_anunciante = Anunciante.uid
               WHERE UPPER(AnuncioCasa.cNmMoradia) = UPPER(AcNmMoradia)
                 AND (
-                     Anunciante.cUsername = AcUsername
-                 OR  UPPER(Anunciante.cEmail) = UPPER(AcEmail)
+                    Anunciante.cUsername = AcUsername
+                    OR  UPPER(Anunciante.cEmail) = UPPER(AcEmail)
                     )
             );
 END;
