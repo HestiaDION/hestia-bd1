@@ -399,3 +399,256 @@ VALUES ( FN_Filtro_id('mulheres', 'genero')
      , ( FN_Filtro_id('não fumo', 'fumo')
        , FN_AnuncioCasa_id('2b867633-2', 'tavaragusto', null)
 );
+
+
+
+-- Mais dados NÃO INSERIDOS gerados pelo CHATGPT
+-- -- INSERTS
+--
+-- INSERT INTO Anunciante ( cNome
+--                        , cUsername
+--                        , cEmail
+--                        , cSenha
+--                        , dDtNascimento
+--                        , cGenero
+--                        , cMunicipio
+--                        , cPrefixo
+--                        , cTel
+--                        , cPlano
+--                        , cDescricao
+--                        , cFotoPerfil
+-- )
+-- VALUES ( 'Fernanda Lima'
+--        , 'fernandalima'
+--        , 'fernanda.lima@imob.org.br'
+--        , 'Fernanda!123'
+--        , '1990-03-05'
+--        , 'Feminino'
+--        , 'Porto Alegre'
+--        , DEFAULT
+--        , '51987654321'
+--        , '2'
+--        , 'Trabalho como arquiteta e procuro alugar meu apartamento para estudantes. O ambiente é acolhedor e organizado, ideal para quem busca tranquilidade durante os estudos.'
+--        , 'https://example.com/perfil_fernanda.jpg'
+-- )
+--      , ( 'Carlos Silva'
+--        , 'carlossilva'
+--        , 'carlos.silva@mail.com'
+--        , 'Car!os123'
+--        , '1985-08-15'
+--        , 'Masculino'
+--        , 'Curitiba'
+--        , DEFAULT
+--        , '41987654321'
+--        , DEFAULT
+--        , 'Sou engenheiro e estou alugando meu apartamento no centro da cidade. O imóvel é perfeito para quem estuda ou trabalha, com fácil acesso ao transporte público.'
+--        , 'https://example.com/perfil_carlos.jpg'
+-- );
+--
+-- INSERT INTO AnuncioCasa  ( cNmMoradia
+--                          , cCep
+--                          , cTipoMoradia
+--                          , iNumMoradia
+--                          , cRua
+--                          , cBairro
+--                          , cCidade
+--                          , cUf
+--                          , iQntQuartos
+--                          , iQntPessoasMax
+--                          , nValor
+--                          , cStatus
+--                          , dDtInicio
+--                          , dDtexpiracao
+--                          , cComplemento
+--                          , cRegras
+--                          , uId_Anunciante
+--                          , uId_Boost
+-- )
+-- VALUES ( DEFAULT
+--        , '11223344'
+--        , 'Apartamento'
+--        , 678
+--        , 'Rua Flores'
+--        , 'Vila Jardim'
+--        , 'Porto Alegre'
+--        , 'RS'
+--        , 2
+--        , 4
+--        , 1800.00
+--        , '0'
+--        , '2024-11-01'
+--        , DEFAULT
+--        , 'Próximo ao parque'
+--        , 'Proibido fumar dentro do imóvel, manter silêncio após 22h'
+--        , FN_Anunciante_id('fernandalima', NULL)
+--        , NULL
+-- )
+--      , ( 'Residência Silva'
+--        , '55667788'
+--        , 'Casa'
+--        , 90
+--        , 'Avenida Paraná'
+--        , 'Centro'
+--        , 'Curitiba'
+--        , 'PR'
+--        , 3
+--        , 5
+--        , 3200.00
+--        , DEFAULT
+--        , '2024-12-01'
+--        , DEFAULT
+--        , 'Casa térrea'
+--        , 'Não são permitidos animais de estimação, horário de silêncio a partir das 23h'
+--        , FN_Anunciante_id('carlossilva', NULL)
+--        , NULL
+-- );
+--
+-- INSERT INTO Universitario ( cDne
+--                           , cNome
+--                           , cUsername
+--                           , cEmail
+--                           , cSenha
+--                           , dDtNascimento
+--                           , cGenero
+--                           , cMunicipio
+--                           , cPrefixo
+--                           , cTel
+--                           , cPlano
+--                           , cFotoPerfil
+--                           , cDescricao
+--                           , uId_anuncio
+--                           , cNmFaculdade
+-- )
+-- VALUES ( '4056789012'
+--        , 'Paula Costa'
+--        , 'paula.costa'
+--        , 'paula.costa@gmail.com'
+--        , 'Paul@123!'
+--        , '2003-12-25'
+--        , 'Feminino'
+--        , 'Porto Alegre'
+--        , DEFAULT
+--        , '51 94567 1234'
+--        , '1'
+--        , 'https://example.com/perfil_paula.jpg'
+--        , 'Estudante de jornalismo, adoro viajar e descobrir novas culturas. Busco um local tranquilo para continuar meus estudos.'
+--        , FN_AnuncioCasa_id('678', 'fernandalima', NULL)
+--        , 'Universidade Federal do Rio Grande do Sul (UFRGS)'
+-- )
+--      , ( '5067890123'
+--        , 'Lucas Oliveira'
+--        , 'lucas.oliveira'
+--        , 'lucas.oliveira@mail.com'
+--        , 'L!ucas2024'
+--        , '2002-02-28'
+--        , 'Masculino'
+--        , 'Curitiba'
+--        , DEFAULT
+--        , '41 95432 6789'
+--        , '1'
+--        , 'https://example.com/perfil_lucas.jpg'
+--        , 'Estudante de engenharia mecânica, gosto de esportes e de aproveitar a vida ao ar livre. Estou em busca de um lugar prático e bem localizado.'
+--        , FN_AnuncioCasa_id('90', 'carlossilva', NULL)
+--        , 'Universidade Tecnológica Federal do Paraná (UTFPR)'
+-- );
+--
+-- INSERT INTO Foto_Anuncio ( cUrl
+--                          , uId_anuncio
+-- )
+-- VALUES ( 'https://example.com/apto_po.jpg'
+--        , FN_AnuncioCasa_id('678', 'fernandalima', NULL)
+-- )
+--      , ( 'https://example.com/casa_ctba.jpg'
+--        , FN_AnuncioCasa_id('90', 'carlossilva', NULL)
+-- );
+--
+-- INSERT INTO Universitario_Filtro ( uId_Filtro
+--                                  , uId_universitario
+-- )
+-- VALUES ( FN_Filtro_id('mulheres', 'genero')
+--        , FN_Universitario_id('paula.costa', NULL, NULL)
+-- )
+--      , ( FN_Filtro_id('cachorro', 'animal')
+--        , FN_Universitario_id('paula.costa', NULL, NULL)
+-- )
+--      , ( FN_Filtro_id('não fumo', 'fumo')
+--        , FN_Universitario_id('lucas.oliveira', NULL, NULL)
+-- );
+
+-- -- INSERÇÃO DOS FILTROS ADICIONAIS PARA OS NOVOS DADOS
+--
+-- INSERT INTO Anuncio_Filtro ( uId_Filtro
+--                            , uId_anuncio)
+-- VALUES ( FN_Filtro_id('mulheres', 'genero')
+--        , FN_AnuncioCasa_id('678', 'fernandalima', NULL)
+-- )
+--      , ( FN_Filtro_id('não fumo', 'fumo')
+--        , FN_AnuncioCasa_id('678', 'fernandalima', NULL)
+-- )
+--      , ( FN_Filtro_id('gato', 'animal')
+--        , FN_AnuncioCasa_id('678', 'fernandalima', NULL)
+-- )
+--      , ( FN_Filtro_id('não me importo', 'genero')
+--        , FN_AnuncioCasa_id('90', 'carlossilva', NULL)
+-- )
+--      , ( FN_Filtro_id('socialmente, aos fins de semana', 'bebida')
+--        , FN_AnuncioCasa_id('90', 'carlossilva', NULL)
+-- )
+--      , ( FN_Filtro_id('não fumo', 'fumo')
+--        , FN_AnuncioCasa_id('90', 'carlossilva', NULL)
+-- );
+--
+-- -- INSERÇÃO DOS NOVOS CHATS
+--
+-- INSERT INTO Chat ( uIdRemetente
+--                  , cMensagem
+--                  , dDtMensagem
+--                  , cStatus
+--                  , uId_Universitario
+--                  , uId_Anuncio
+--                  , uId_Forum
+-- )
+-- VALUES ( FN_Anunciante_id('fernandalima', NULL)
+--        , 'Olá, Paula! O apartamento está disponível para visitas a partir de segunda-feira.'
+--        , '2024-10-12 10:30:00'
+--        , '0'
+--        , FN_Universitario_id('paula.costa', NULL, NULL)
+--        , FN_AnuncioCasa_id('678', 'fernandalima', NULL)
+--        , FN_Forum_id('678', (FN_Anunciante_id('fernandalima', NULL)))
+-- )
+--      , ( FN_Anunciante_id('carlossilva', NULL)
+--        , 'Oi Lucas, que bom que você gostou do imóvel! Podemos agendar uma visita quando for melhor para você.'
+--        , '2024-10-12 14:50:00'
+--        , '0'
+--        , FN_Universitario_id('lucas.oliveira', NULL, NULL)
+--        , FN_AnuncioCasa_id('90', 'carlossilva', NULL)
+--        , FN_Forum_id('90', (FN_Anunciante_id('carlossilva', NULL)))
+-- );
+--
+-- -- INSERÇÃO DOS NOVOS FORUNS
+--
+-- INSERT INTO Forum ( cNome
+--                   , uIdAdm
+--                   , cDescricao
+-- )
+-- VALUES ( 'Grupo informativo - Apartamento Porto Alegre'
+--        , FN_Anunciante_id('fernandalima', NULL)
+--        , 'Fórum de comunicação para moradores e interessados no apartamento da Rua Flores, Porto Alegre.'
+-- )
+--      , ( 'Grupo informativo - Residência Silva'
+--        , FN_Anunciante_id('carlossilva', NULL)
+--        , 'Fórum de comunicação para a casa disponível na Avenida Paraná, Curitiba.'
+-- );
+--
+-- -- INSERÇÃO DE MAIS FOTOS DE ANÚNCIO
+--
+-- INSERT INTO Foto_Anuncio ( cUrl
+--                          , uId_anuncio
+-- )
+-- VALUES ( 'https://example.com/apto_fernanda.jpg'
+--        , FN_AnuncioCasa_id('678', 'fernandalima', NULL)
+-- )
+--      , ( 'https://example.com/casa_silva.jpg'
+--        , FN_AnuncioCasa_id('90', 'carlossilva', NULL)
+-- );
+
